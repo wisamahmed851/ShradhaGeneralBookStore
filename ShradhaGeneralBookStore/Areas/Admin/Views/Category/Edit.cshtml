@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+@model ShradhaGeneralBookStore.Models.ViewModel.AddCategoryViewModel
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-xl mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Edit Category</h2>
+
+            <form asp-area="Admin" asp-controller="Category" asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@ViewBag.CategoryId" />
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Category Name</label>
+                    <input asp-for="Name" class="author-input" placeholder="Enter category name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 transition-all px-6 py-2 rounded-lg text-white font-semibold shadow-md">
+                    Update Category
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

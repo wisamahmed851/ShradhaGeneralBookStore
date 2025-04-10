@@ -25,7 +25,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
 
 
            [HttpPost]
-           public async Task<IActionResult> Create(AddAuthorViewModel model)
+        public async Task<IActionResult> Create(AddAuthorViewModel model)
 
             {
 

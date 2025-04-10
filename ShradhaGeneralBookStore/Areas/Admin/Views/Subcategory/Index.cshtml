@@ -1,37 +1,43 @@
 ﻿@{
     Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
 }
-@model List<ShradhaGeneralBookStore.Models.Entities.Author>
+@model List<ShradhaGeneralBookStore.Models.Entities.Subcategory>
 
 <main class="main-wrapper">
     <div class="main-content">
         <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-6xl mx-auto mt-10">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold">Author List</h2>
-                <a href="@Url.Action("Create", "Author", new { area = "Admin" })" class="bg-white text-indigo-800 font-semibold px-4 py-2 rounded hover:bg-gray-100">
-                    + Add Author
+                <h2 class="text-2xl font-bold">Subcategory List</h2>
+                <a href="@Url.Action("Create", "Subcategory", new { area = "Admin" })" class="bg-white text-indigo-800 font-semibold px-4 py-2 rounded hover:bg-gray-100">
+                    + Add Subcategory
                 </a>
             </div>
 
-            <table id="authorTable" class="display w-full text-white">
+            <table id="subcategoryTable" class="display w-full text-white">
                 <thead class="bg-gray-700 text-white">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Category</th>
+                        <th>Manufacturer</th>
+                        <th>Code</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var author in Model)
+                    @foreach (var subcategory in Model)
                     {
                         <tr>
-                            <td>@author.Id</td>
-                            <td>@author.Name</td>
+                            <td>@subcategory.Id</td>
+                            <td>@subcategory.Name</td>
+                            <td>@subcategory.Category.Name</td> <!-- Assuming Category is related to Subcategory -->
+                            <td>@subcategory.ManufacturerName</td>
+                            <td>@subcategory.Code</td>
                             <td>
-                                <a href="@Url.Action("Edit", "Author", new { id = author.Id, area = "Admin" })"
+                                <a href="@Url.Action("Edit", "Subcategory", new { id = subcategory.Id, area = "Admin" })"
                                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</a>
-                                <a href="@Url.Action("Delete", "Author", new { id = author.Id, area = "Admin" })"
-                                   onclick="return confirm('Are you sure you want to delete this author?');"
+                                <a href="@Url.Action("Delete", "Subcategory", new { id = subcategory.Id, area = "Admin" })"
+                                   onclick="return confirm('Are you sure you want to delete this subcategory?');"
                                    class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">Delete</a>
                             </td>
                         </tr>
@@ -47,14 +53,14 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#authorTable').DataTable({
+            $('#subcategoryTable').DataTable({
                 "pageLength": 5,
                 "lengthChange": false,
                 "searching": true,
                 "ordering": true,
                 "language": {
                     search: "",
-                    searchPlaceholder: "Search authors..."
+                    searchPlaceholder: "Search subcategories..."
                 },
                 "dom": '<"flex justify-between items-center mb-2"lf>tip'
             });

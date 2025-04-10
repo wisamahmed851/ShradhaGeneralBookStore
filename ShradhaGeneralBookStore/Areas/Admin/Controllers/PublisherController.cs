@@ -43,5 +43,39 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Publisher added successfully!";
             return RedirectToAction("Index");
         }
-    }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var publisher = await _context.Publisher.FindAsync(id);
+
+            return View(publisher);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Publisher model)
+        {
+            var existingPublisher = await _context.Publisher.FindAsync(model.Id);
+            if(existingPublisher == null)
+            {
+                return NotFound();
+            }
+            existingPublisher.Name = model.Name;
+
+            _context.Publisher.Update(existingPublisher);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Publisher updated successfully!";
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var publisher = await _context.Publisher.FindAsync(id);
+            if (publisher == null)
+            {
+                return NotFound();
+            }
+            _context.Publisher.Remove(publisher);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Publisher deleted successfully!";
+            return RedirectToAction("Index");
+        }
+        }
 }
