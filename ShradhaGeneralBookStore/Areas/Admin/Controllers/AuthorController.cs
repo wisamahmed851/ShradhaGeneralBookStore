@@ -33,6 +33,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                     return View(model);
 
                 var author = new Author
+
                 {
                     Name = model.Name
                 };
