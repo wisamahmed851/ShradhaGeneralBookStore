@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+@model List<ShradhaGeneralBookStore.Models.Entities.Publisher>
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-6xl mx-auto mt-10">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Author List</h2>
+                <a href="@Url.Action("Create", "publisher", new { area = "Admin" })" class="bg-white text-indigo-800 font-semibold px-4 py-2 rounded hover:bg-gray-100">
+                    + Add Author
+                </a>
+            </div>
+
+            <table id="authorTable" class="display w-full text-white">
+                <thead class="bg-gray-700 text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var publisher in Model)
+                    {
+                            <tr>
+                            <td>@publisher.Id</td>
+                            <td>@publisher.Name</td>
+                                <td>
+                                <a href="@Url.Action("Edit", "publisher", new { id = publisher.Id, area = "Admin" })"
+                                       class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</a>
+                                <a href="@Url.Action("Delete", "publisher", new { id = publisher.Id, area = "Admin" })"
+                                       onclick="return confirm('Are you sure you want to delete this author?');"
+                                       class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">Delete</a>
+                                </td>
+                            </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#authorTable').DataTable({
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "language": {
+                        search: "",
+                        searchPlaceholder: "Search authors..."
+                    },
+                    "dom": '<"flex justify-between items-center mb-2"lf>tip'
+                });
+
+                // Apply white text color to DataTables elements
+                $('.dataTables_wrapper').addClass('text-white');
+            });
+        </script>
+}

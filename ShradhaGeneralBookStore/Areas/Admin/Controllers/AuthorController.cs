@@ -2,7 +2,7 @@
 using ShradhaGeneralBookStore.Datas;
 using ShradhaGeneralBookStore.Models.Entities;
 using ShradhaGeneralBookStore.Filters;
-using ShradhaGeneralBookStore.Models.ViewModels;
+using ShradhaGeneralBookStore.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
