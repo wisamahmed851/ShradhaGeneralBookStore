@@ -30,18 +30,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
 
             {
                 if (!ModelState.IsValid)
-                {
-                // Log all validation errors to the Output window
-                   foreach (var entry in ModelState)
-                   {
-                    string key = entry.Key;
-                    var errors = entry.Value.Errors;
-
-                    foreach (var error in errors)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Validation error in '{key}': {error.ErrorMessage}");
-                    }
-                }
+                    return View(model);
 
                 var author = new Author
                 {
