@@ -25,32 +25,35 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
-public async Task<IActionResult> Create(Author model)
-{
-    if (!ModelState.IsValid)
-    {
-        // Log all validation errors to the Output window
-        foreach (var entry in ModelState)
-        {
-            string key = entry.Key;
-            var errors = entry.Value.Errors;
+           [HttpPost]
+           public async Task<IActionResult> Create(AddAuthorViewModel model)
 
-            foreach (var error in errors)
             {
-                System.Diagnostics.Debug.WriteLine($"Validation error in '{key}': {error.ErrorMessage}");
+                if (!ModelState.IsValid)
+                {
+                // Log all validation errors to the Output window
+                   foreach (var entry in ModelState)
+                   {
+                    string key = entry.Key;
+                    var errors = entry.Value.Errors;
+
+                    foreach (var error in errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Validation error in '{key}': {error.ErrorMessage}");
+                    }
+                }
+
+                var author = new Author
+                {
+                    Name = model.Name
+                };
+
+                await _context.Author.AddAsync(author);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Author added successfully!";
+                return RedirectToAction("Index");
             }
-        }
-
-        return View(model); // Show validation messages in the view
-    }
-
-    await _context.Author.AddAsync(model);
-    await _context.SaveChangesAsync();
-
-    TempData["SuccessMessage"] = "Author added successfully!";
-    return RedirectToAction("Index");
-}
 
 
 
