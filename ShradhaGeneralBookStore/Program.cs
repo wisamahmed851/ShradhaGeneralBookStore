@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShradhaGeneralBookStore.Datas;
 using ShradhaGeneralBookStore.Filters;
+using ShradhaGeneralBookStore.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +22,18 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-app.UseMiddleware<AuthorizeAdminAttribute>();
+
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseSession(); // ✅ Must come before UseAuthorization
+
+// ✅ Use your custom admin authentication middleware here
+app.UseMiddleware<AdminAuthMiddleware>();
+
 app.UseAuthorization();
+
 
 // Comment out custom methods temporarily if unsure
 // app.MapStaticAssets();

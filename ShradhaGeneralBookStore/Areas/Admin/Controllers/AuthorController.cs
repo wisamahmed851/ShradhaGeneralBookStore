@@ -62,11 +62,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Author model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
+            
             var existingAuthor = await _context.Author.FindAsync(model.Id);
             if (existingAuthor == null)
             {
