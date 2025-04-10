@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthorizeAdmin]
     public class AuthorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,6 +28,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
            public async Task<IActionResult> Create(AddAuthorViewModel model)
 
             {
+
                 if (!ModelState.IsValid)
                     return View(model);
 

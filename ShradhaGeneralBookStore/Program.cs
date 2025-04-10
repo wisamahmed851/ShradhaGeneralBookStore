@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShradhaGeneralBookStore.Datas;
+using ShradhaGeneralBookStore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
+app.UseMiddleware<AuthorizeAdminAttribute>();
 app.UseHttpsRedirection();
 app.UseRouting();
 
