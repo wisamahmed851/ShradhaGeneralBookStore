@@ -15,6 +15,7 @@ namespace ShradhaGeneralBookStore.Datas
         public DbSet<Author> Author { get; set; }
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

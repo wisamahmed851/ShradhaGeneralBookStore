@@ -40,9 +40,12 @@ namespace ShradhaGeneralBookStore.Models.Entities
         [MaxLength(100)]
         public string ProductType { get; set; }
 
-        [Required, StringLength(7)]
+        [Required, StringLength(10)]
         public string UniqueCode { get; set; }
 
         public int Stock { get; set; }
+
+        public ICollection<ProductImage> ProductImages { get; set; }
+
     }
 }
