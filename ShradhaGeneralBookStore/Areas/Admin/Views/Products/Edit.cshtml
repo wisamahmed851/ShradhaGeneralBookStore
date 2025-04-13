@@ -1,1 +1,136 @@
-﻿
+﻿@model ShradhaGeneralBookStore.Models.ViewModel.EditProductViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/24zbu84asddg7d1aubws56utqbpsjwzlvwypvh7ankstxkwn/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#Description',
+            plugins: 'link image code lists',
+            toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
+            menubar: false,
+            height: 300,
+            branding: false,
+            skin: 'oxide-dark',
+            content_css: 'dark'
+        });
+    </script>
+}
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-xl mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Update Product</h2>
+
+            <form asp-area="Admin" asp-controller="Products" asp-action="Edit" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label asp-for="Name" class="block text-sm font-medium mb-1">Product Name</label>
+                    <input asp-for="Name" class="author-input" placeholder="Enter product name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="block text-sm font-medium mb-1">Description</label>
+                    <textarea asp-for="Description" id="Description" class="author-input" placeholder="Enter detailed product description..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+
+                <div class="mb-4">
+                    <label asp-for="SubcategoryId" class="block text-sm font-medium mb-1">Subcategory</label>
+                    <select asp-for="SubcategoryId" class="author-input">
+                        <option value="">Select Subcategory</option>
+                        @foreach (var group in ViewBag.GroupedSubcategories as Dictionary<string, List<SelectListItem>>)
+                        {
+                            <optgroup label="@group.Key">
+                                @foreach (var sub in group.Value)
+                                {
+                                    <option value="@sub.Value">@sub.Text</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                    <span asp-validation-for="SubcategoryId" class="text-danger"></span>
+                </div>
+
+
+                <div class="mb-4">
+                    <label asp-for="AuthorId" class="block text-sm font-medium mb-1">Author</label>
+                    <select asp-for="AuthorId" class="author-input">
+                        <option value="">Select Author (Optional)</option>
+                        @foreach (var author in ViewData["AuthorId"] as SelectList)
+                        {
+                            <option value="@author.Value">@author.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="PublisherId" class="block text-sm font-medium mb-1">Publisher</label>
+                    <select asp-for="PublisherId" class="author-input">
+                        <option value="">Select Publisher (Optional)</option>
+                        @foreach (var pub in ViewData["PublisherId"] as SelectList)
+                        {
+                            <option value="@pub.Value">@pub.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Price" class="block text-sm font-medium mb-1">Price</label>
+                    <input asp-for="Price" class="author-input" placeholder="Enter price" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Stock" class="block text-sm font-medium mb-1">Stock Quantity</label>
+                    <input asp-for="Stock" class="author-input" type="number" min="0" />
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ReleaseDate" class="block text-sm font-medium mb-1">Release Date</label>
+                    <input asp-for="ReleaseDate" class="author-input" type="date" />
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Version" class="block text-sm font-medium mb-1">Version</label>
+                    <input asp-for="Version" class="author-input" placeholder="e.g., 1st Edition" />
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ProductType" class="block text-sm font-medium mb-1">Product Type</label>
+                    <input asp-for="ProductType" class="author-input" placeholder="e.g., Book, CD" />
+                </div>
+
+                <div class="mb-6">
+                    <label asp-for="ImageFiles" class="block text-sm font-medium mb-1">Upload Product Images</label>
+                    <input asp-for="ImageFiles" type="file" class="author-input text-white bg-gray-800" multiple />
+                    <span asp-validation-for="ImageFiles" class="text-danger"></span>
+                </div>
+                @if (ViewBag.ExistingImages != null)
+                {
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Existing Images</label>
+                        <div class="flex flex-wrap gap-4" style=" display: flex;">
+                            @foreach (var imgPath in ViewBag.ExistingImages as List<string>)
+                            {
+                                <div class="border rounded-lg p-2 d-flex">
+                                    <img src="@Url.Content(imgPath)" width="100" class="rounded shadow" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <button type="submit" class="bg-dark-900 hover:bg-dark-800 bg-dark mt-4 transition-all px-6 py-2 rounded-2 text-white font-semibold border-none">
+                    Update Product
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
