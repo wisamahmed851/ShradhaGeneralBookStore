@@ -108,10 +108,17 @@
                 </div>
 
                 <div class="mb-6">
-                    <label asp-for="ImageFiles" class="block text-sm font-medium mb-1">Upload Product Images</label>
-                    <input asp-for="ImageFiles" type="file" class="author-input text-white bg-gray-800" multiple />
-                    <span asp-validation-for="ImageFiles" class="text-danger"></span>
+                    <label asp-for="coverImage" class="block text-sm font-medium mb-1">Upload Product Cover Image</label>
+                    <input asp-for="coverImage" type="file" class="author-input text-white bg-gray-800" />
+                    <span asp-validation-for="coverImage" class="text-danger"></span>
                 </div>
+
+                <div class="mb-6">
+                    <label asp-for="detailImages" class="block text-sm font-medium mb-1">Upload Product Detail Images</label>
+                    <input asp-for="detailImages" type="file" class="author-input text-white bg-gray-800" multiple />
+                    <span asp-validation-for="detailImages" class="text-danger"></span>
+                </div>
+
 
                 <button type="submit" class="bg-dark-900 hover:bg-dark-800 bg-dark mt-4 transition-all px-6 py-2 rounded-2 text-white font-semibold border-none">
                     Create Product

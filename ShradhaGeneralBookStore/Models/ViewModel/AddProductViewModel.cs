@@ -37,8 +37,9 @@ namespace ShradhaGeneralBookStore.Models.ViewModel
         [Required]
         public int Stock { get; set; }
 
-        // Multiple Image Upload
         [Required]
-        public List<IFormFile> ImageFiles { get; set; }
+        public IFormFile coverImage { get; set; }
+
+        public List<IFormFile> detailImages { get; set; }
     }
 }

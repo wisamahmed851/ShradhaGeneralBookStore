@@ -14,6 +14,10 @@
     <script src="~/assets1/js/pace.min.js"></script>
     @RenderSection("Styles", required: false)
     <!--plugins-->
+    <!-- SweetAlert2 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link href="~/assets1/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
@@ -717,6 +721,7 @@
             </div>
         </div>
     </div>
+   
     <!--start switcher-->
     <!--bootstrap js-->
     <script src="~/assets1/js/bootstrap.bundle.min.js"></script>
@@ -740,6 +745,43 @@
         new PerfectScrollbar(".user-list")
     </script>
     @RenderSection("Scripts", required: false)
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const successMessage = '@TempData["SuccessMessage"]';
+            const errorMessage = '@TempData["ErrorMessage"]';
+            const warningMessage = '@TempData["WarningMessage"]';
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    background: '#2C2CFF',
+                    color: '#fff',
+                    confirmButtonColor: '#1e1e2f'
+                });
+            } else if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    background: '#2C2CFF',
+                    color: '#fff',
+                    confirmButtonColor: '#1e1e2f'
+                });
+            } else if (warningMessage) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: warningMessage,
+                    background: '#2C2CFF',
+                    color: '#fff',
+                    confirmButtonColor: '#1e1e2f'
+                });
+            }
+        });
+    </script>
+
 </body>
 
 

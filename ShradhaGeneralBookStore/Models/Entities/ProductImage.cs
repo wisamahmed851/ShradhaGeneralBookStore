@@ -9,12 +9,16 @@ namespace ShradhaGeneralBookStore.Models.Entities
         public int Id { get; set; }
 
         [Required]
-        public string ImageUrl { get; set; } // Only path or filename, not the binary data
+        public string ImageUrl { get; set; }
 
         [Required]
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
+
+        [Required]
+        public ProductImageType ImageType { get; set; } // NEW: Cover or Detail
     }
+
 }

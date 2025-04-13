@@ -29,6 +29,12 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                 .Include(p => p.Publisher)
                 .Include(p => p.ProductImages)
                 .ToListAsync();
+            foreach (var product in products)
+            {
+                product.ProductImages = product.ProductImages
+                    .Where(img => img.ImageType == ProductImageType.Cover)
+                    .ToList();
+            }
             return View(products);
         }
         public async Task<IActionResult> Create()
@@ -101,17 +107,37 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             _context.Product.Add(product);
             await _context.SaveChangesAsync();
 
-            if (model.ImageFiles != null && model.ImageFiles.Count > 0)
-
+            string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "ProductImages");
+            if (!Directory.Exists(uploadPath))
             {
-                string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "ProductImages");
+                Directory.CreateDirectory(uploadPath);
+            }
 
-                if (!Directory.Exists(uploadPath))
+            // ✅ Save Cover Image
+            if (model.coverImage != null)
+            {
+                string uniqueFileName = $"{Guid.NewGuid()}_{model.coverImage.FileName}";
+                string fullPath = Path.Combine(uploadPath, uniqueFileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    Directory.CreateDirectory(uploadPath);
+                    await model.coverImage.CopyToAsync(stream);
                 }
 
-                foreach (var image in model.ImageFiles)
+                var coverProductImage = new ProductImage
+                {
+                    ProductId = product.Id,
+                    ImageUrl = "/ProductImages/" + uniqueFileName,
+                    ImageType = ProductImageType.Cover
+                };
+
+                _context.ProductImage.Add(coverProductImage);
+            }
+
+            // ✅ Save Detail Images
+            if (model.detailImages != null && model.detailImages.Count > 0)
+            {
+                foreach (var image in model.detailImages)
                 {
                     string uniqueFileName = $"{Guid.NewGuid()}_{image.FileName}";
                     string fullPath = Path.Combine(uploadPath, uniqueFileName);
@@ -121,18 +147,19 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                         await image.CopyToAsync(stream);
                     }
 
-                    var productImage = new ProductImage
+                    var detailProductImage = new ProductImage
                     {
                         ProductId = product.Id,
-                        ImageUrl = "/ProductImages/" + uniqueFileName
+                        ImageUrl = "/ProductImages/" + uniqueFileName,
+                        ImageType = ProductImageType.Detail
                     };
 
-                    _context.ProductImage.Add(productImage);
+                    _context.ProductImage.Add(detailProductImage);
                 }
-
-
-                await _context.SaveChangesAsync();
             }
+
+            await _context.SaveChangesAsync();
+
 
             TempData["SuccessMessage"] = "Product created successfully!";
             return RedirectToAction("Index"); 
@@ -191,7 +218,6 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                 Version = product.Version,
                 ProductType = product.ProductType,
                 Stock = product.Stock,
-                ImageFiles = new List<IFormFile>() // View expects it, but skip loading files here
             };
 
             // Dropdowns
@@ -213,7 +239,12 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                 );
 
             ViewBag.GroupedSubcategories = groupedSubcategories;
-            ViewBag.ExistingImages = product.ProductImages.Select(p => p.ImageUrl).ToList();
+            ViewBag.CoverImage = product.ProductImages
+                .FirstOrDefault(p => p.ImageType == ProductImageType.Cover)?.ImageUrl;
+            ViewBag.DetailImages = product.ProductImages
+                .Where(p => p.ImageType == ProductImageType.Detail)
+                .Select(p => p.ImageUrl)
+                .ToList();
 
             return View(viewModel); // ✅ Now this matches the View's model
         }
@@ -257,13 +288,55 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                     product.CategoryId = subcategory.CategoryId;
                 }
             }
+            string imagePathRoot = Path.Combine(_hostEnvironment.WebRootPath, "ProductImages");
 
-            // ✅ Handle images (if new ones are uploaded)
-            if (model.ImageFiles != null && model.ImageFiles.Count > 0)
+            // ✅ 1. Handle Cover Image
+            if (model.coverImage != null)
             {
-                // 1. Delete old images from wwwroot
-                string imagePathRoot = Path.Combine(_hostEnvironment.WebRootPath, "ProductImages");
-                foreach (var img in product.ProductImages)
+                // Delete existing cover image from wwwroot
+                var coverImage = product.ProductImages
+                    .FirstOrDefault(img => img.ImageType == ProductImageType.Cover);
+
+                if (coverImage != null)
+                {
+                    string fullPath = Path.Combine(_hostEnvironment.WebRootPath, coverImage.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+
+                    // Remove from DB
+                    _context.ProductImage.Remove(coverImage);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Upload new cover image
+                string uniqueCoverName = $"{Guid.NewGuid()}_{model.coverImage.FileName}";
+                string coverFullPath = Path.Combine(imagePathRoot, uniqueCoverName);
+
+                using (var stream = new FileStream(coverFullPath, FileMode.Create))
+                {
+                    await model.coverImage.CopyToAsync(stream);
+                }
+
+                var newCoverImage = new ProductImage
+                {
+                    ProductId = product.Id,
+                    ImageUrl = "/ProductImages/" + uniqueCoverName,
+                    ImageType = ProductImageType.Cover
+                };
+                _context.ProductImage.Add(newCoverImage);
+            }
+
+            // ✅ 2. Handle Detail Images
+            if (model.detailImages != null && model.detailImages.Count > 0)
+            {
+                // Delete existing detail images
+                var detailImages = product.ProductImages
+                    .Where(img => img.ImageType == ProductImageType.Detail)
+                    .ToList();
+
+                foreach (var img in detailImages)
                 {
                     string fullPath = Path.Combine(_hostEnvironment.WebRootPath, img.ImageUrl.TrimStart('/'));
                     if (System.IO.File.Exists(fullPath))
@@ -272,12 +345,11 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                     }
                 }
 
-                // 2. Remove from DB
-                _context.ProductImage.RemoveRange(product.ProductImages);
-                await _context.SaveChangesAsync(); // Commit deletion
+                _context.ProductImage.RemoveRange(detailImages);
+                await _context.SaveChangesAsync();
 
-                // 3. Upload new images
-                foreach (var image in model.ImageFiles)
+                // Upload new detail images
+                foreach (var image in model.detailImages)
                 {
                     string uniqueFileName = $"{Guid.NewGuid()}_{image.FileName}";
                     string fullPath = Path.Combine(imagePathRoot, uniqueFileName);
@@ -287,16 +359,18 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                         await image.CopyToAsync(stream);
                     }
 
-                    var newImage = new ProductImage
+                    var newDetailImage = new ProductImage
                     {
                         ProductId = product.Id,
-                        ImageUrl = "/ProductImages/" + uniqueFileName
+                        ImageUrl = "/ProductImages/" + uniqueFileName,
+                        ImageType = ProductImageType.Detail
                     };
-                    _context.ProductImage.Add(newImage);
+                    _context.ProductImage.Add(newDetailImage);
                 }
             }
 
             await _context.SaveChangesAsync();
+
 
             TempData["SuccessMessage"] = "Product updated successfully!";
             return RedirectToAction(nameof(Index));
@@ -325,6 +399,39 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             });
             return Content(json, "application/json");
 
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _context.Product
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Delete images from wwwroot
+            foreach (var image in product.ProductImages)
+            {
+                string fullPath = Path.Combine(_hostEnvironment.WebRootPath, image.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+
+            // Remove images from database
+            _context.ProductImage.RemoveRange(product.ProductImages);
+
+            // Remove product
+            _context.Product.Remove(product);
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Product deleted successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
     }

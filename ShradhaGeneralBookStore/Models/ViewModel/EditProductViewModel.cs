@@ -35,8 +35,8 @@ namespace ShradhaGeneralBookStore.Models.ViewModel
 
         [Required]
         public int Stock { get; set; }
-        [AllowNull]
-        public List<IFormFile> ImageFiles { get; set; } = new List<IFormFile>();
+        public IFormFile? coverImage { get; set; }  // Make nullable
+        public List<IFormFile>? detailImages { get; set; }  // Also nullable
 
     }
 }

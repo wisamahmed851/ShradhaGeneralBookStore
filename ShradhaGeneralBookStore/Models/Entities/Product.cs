@@ -46,6 +46,12 @@ namespace ShradhaGeneralBookStore.Models.Entities
         public int Stock { get; set; }
 
         public ICollection<ProductImage> ProductImages { get; set; }
+        [NotMapped]
+        public ProductImage CoverImage => ProductImages?.FirstOrDefault(img => img.ImageType == ProductImageType.Cover);
+
+        [NotMapped]
+        public IEnumerable<ProductImage> DetailImages => ProductImages?.Where(img => img.ImageType == ProductImageType.Detail);
+
 
     }
 }
