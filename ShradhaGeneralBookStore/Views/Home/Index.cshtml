@@ -111,7 +111,7 @@
         </div>
         <div class="swiper book-slider">
             <div class="swiper-wrapper">
-                @foreach (var product in Model.Products)
+                @foreach (var product in Model.RecentlyAddedProducts)
                 {
                     <div class="swiper-slide">
                         <div class="shop-box-items style-2">
@@ -120,7 +120,7 @@
                                 {
                                     foreach (var image in product.ProductImages)
                                     {
-                                        <a href="#"><img src="@Url.Content(image.ImageUrl)" alt="book" /></a>
+                                        <a href="@Url.Action("Details", "Shop", new {id = product.Id })"><img src="@Url.Content(image.ImageUrl)" alt="book" /></a>
                                     }
                                 }
                                 <ul class="post-box">
@@ -177,66 +177,31 @@
             </div>
             <div class="swiper book-catagories-slider">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="book-catagories-items">
-                            <div class="book-thumb">
-                                <img src="~/assets/img/book-categori/01.png" alt="img">
-                                <div class="circle-shape">
-                                    <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var category in Model.TopCategories)
+                    {
+                        <div class="swiper-slide">
+                            <div class="book-catagories-items">
+                                <div class="book-thumb">
+                                    @if (!string.IsNullOrEmpty(category.ImageUrl))
+                                    {
+                                        <img src="@Url.Content(category.ImageUrl)" alt="shape-img" 
+                                            height="130px" width="130px">
+                                    }
+                                    <div class="circle-shape">
+                                        
+                                            <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
+                                    </div>
                                 </div>
+                                <div class="number"> @count.ToString("00") </div>
+                                <h3><a href="#">@category.CategoryName (@category.ProductCount)</a></h3>
                             </div>
-                            <div class="number"> 01 </div>
-                            <h3><a href="shop-details.html">Romance Books (80)</a></h3>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="book-catagories-items">
-                            <div class="book-thumb">
-                                <img src="~/assets/img/book-categori/02.png" alt="img">
-                                <div class="circle-shape">
-                                    <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
-                                </div>
-                            </div>
-                            <div class="number"> 02 </div>
-                            <h3><a href="shop-details.html">Design Low Book (6)</a></h3>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="book-catagories-items">
-                            <div class="book-thumb">
-                                <img src="~/assets/img/book-categori/03.png" alt="img">
-                                <div class="circle-shape">
-                                    <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
-                                </div>
-                            </div>
-                            <div class="number"> 03 </div>
-                            <h3><a href="shop-details.html">safe Home (5)</a></h3>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="book-catagories-items">
-                            <div class="book-thumb">
-                                <img src="~/assets/img/book-categori/04.png" alt="img">
-                                <div class="circle-shape">
-                                    <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
-                                </div>
-                            </div>
-                            <div class="number"> 04 </div>
-                            <h3><a href="shop-details.html">Grow flower (7)</a></h3>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="book-catagories-items">
-                            <div class="book-thumb">
-                                <img src="~/assets/img/book-categori/05.png" alt="img">
-                                <div class="circle-shape">
-                                    <img src="~/assets/img/book-categori/circle-shape.png" alt="shape-img">
-                                </div>
-                            </div>
-                            <div class="number"> 05 </div>
-                            <h3><a href="shop-details.html">Adventure book (4)</a></h3>
-                        </div>
-                    </div>
+
+                    }
+                   
                 </div>
             </div>
         </div>
@@ -255,230 +220,58 @@
             </a>
         </div>
         <div class="book-shop-wrapper">
-            <div class="shop-box-items style-2">
-                <div class="book-thumb center">
-                    <a href="shop-details-2.html"><img src="~/assets/img/book/05.png" alt="img"></a>
-                    <ul class="shop-icon d-grid justify-content-center align-items-center">
-                        <li>
-                            <a href="shop-cart.html"><i class="far fa-heart"></i></a>
-                        </li>
-                        <li>
-                            <a href="shop-cart.html">
-
-                                <img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="shop-details.html"><i class="far fa-eye"></i></a>
-                        </li>
-                    </ul>
+            @foreach (var book in Model.CheapestProducts)
+            {
+                <div class="shop-box-items style-2">
+                    <div class="book-thumb center">
+                        <a href="@Url.Action("Details", "Shop", new { id = book.Id })">
+                            <img src="@Url.Content(@book.CoverImage.ImageUrl)" alt="img">
+                        </a>
+                        <ul class="shop-icon d-grid justify-content-center align-items-center">
+                            <li>
+                                <a href="#"><i class="far fa-heart"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon"></a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Details", "Shop", new { id = book.Id })"><i class="far fa-eye"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="shop-content">
+                        <h3><a href="@Url.Action("Details", "Shop", new { id = book.Id })">@book.Name</a></h3>
+                        <ul class="price-list">
+                            <li>$@book.Price.ToString("0.00")</li>
+                        </ul>
+                        <ul class="author-post">
+                            <li class="authot-list">
+                                <span class="thumb">
+                                    <img src="~/assets/img/testimonial/client-1.png" alt="img">
+                                </span>
+                                <span class="content">(Author) @book.Author?.Name</span>
+                            </li>
+                            <li class="star">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="shop-button">
+                        <a href="@Url.Action("Details", "Shop", new { id = book.Id })" class="theme-btn">
+                            <i class="fa-solid fa-basket-shopping"></i> Add To Cart
+                        </a>
+                    </div>
                 </div>
-                <div class="shop-content">
-                    <h5> Design Low Book </h5>
-                    <h3><a href="shop-details.html">Flovely and Unicom <br> Erna</a></h3>
-                    <ul class="price-list">
-                        <li>$30.00</li>
-                        <li>
-                            <del>$39.99</del>
-                        </li>
-                    </ul>
-                    <ul class="author-post">
-                        <li class="authot-list">
-                            <span class="thumb">
-                                <img src="~/assets/img/testimonial/client-1.png" alt="img">
-                            </span>
-                            <span class="content">(Author) Albert</span>
-                        </li>
-                        <li class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-button">
-                    <a href="shop-details.html" class="theme-btn">
-                        <i class="fa-solid fa-basket-shopping"></i> Add To
-                        Cart
-                    </a>
-                </div>
-            </div>
-
-            <div class="shop-box-items style-2">
-                <div class="book-thumb center">
-                    <a href="shop-details-2.html"><img src="~/assets/img/book/04.png" alt="img"></a>
-                    <ul class="post-box">
-                        <li>
-                            Hot
-                        </li>
-                    </ul>
-                    <ul class="shop-icon d-grid justify-content-center align-items-center">
-                        <li>
-                            <a href="shop-cart.html"><i class="far fa-heart"></i></a>
-                        </li>
-                        <li>
-                            <a href="shop-cart.html">
-
-                                <img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="shop-details.html"><i class="far fa-eye"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-content">
-                    <h5> Design Low Book </h5>
-                    <h3><a href="shop-details.html">Qple GPad With Retinay<br> Sispla</a></h3>
-                    <ul class="price-list">
-                        <li>$30.00</li>
-                        <li>
-                            <del>$39.99</del>
-                        </li>
-                    </ul>
-                    <ul class="author-post">
-                        <li class="authot-list">
-                            <span class="thumb">
-                                <img src="~/assets/img/testimonial/client-2.png" alt="img">
-                            </span>
-                            <span class="content">Wilson</span>
-                        </li>
-                        <li class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-button">
-                    <a href="shop-details.html" class="theme-btn">
-                        <i class="fa-solid fa-basket-shopping"></i> Add To
-                        Cart
-                    </a>
-                </div>
-            </div>
-
-            <div class="shop-box-items style-2">
-                <div class="book-thumb center">
-                    <a href="shop-details-2.html"><img src="~/assets/img/book/03.png" alt="img"></a>
-                    <ul class="shop-icon d-grid justify-content-center align-items-center">
-                        <li>
-                            <a href="shop-cart.html"><i class="far fa-heart"></i></a>
-                        </li>
-                        <li>
-                            <a href="shop-cart.html">
-
-                                <img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="shop-details.html"><i class="far fa-eye"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-content">
-                    <h5> Design Low Book </h5>
-                    <h3><a href="shop-details.html">Simple Things You To <br> Save BOOK</a></h3>
-                    <ul class="price-list">
-                        <li>$30.00</li>
-                        <li>
-                            <del>$39.99</del>
-                        </li>
-                    </ul>
-                    <ul class="author-post">
-                        <li class="authot-list">
-                            <span class="thumb">
-                                <img src="~/assets/img/testimonial/client-3.png" alt="img">
-                            </span>
-                            <span class="content">Wilson</span>
-                        </li>
-                        <li class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-button">
-                    <a href="shop-details.html" class="theme-btn">
-                        <i class="fa-solid fa-basket-shopping"></i> Add To
-                        Cart
-                    </a>
-                </div>
-            </div>
-
-            <div class="shop-box-items style-2">
-                <div class="book-thumb center">
-                    <a href="shop-details-2.html"><img src="~/assets/img/book/02.png" alt="img"></a>
-                    <ul class="post-box">
-                        <li>
-                            Hot
-                        </li>
-                        <li>
-                            -30%
-                        </li>
-                    </ul>
-                    <ul class="shop-icon d-grid justify-content-center align-items-center">
-                        <li>
-                            <a href="shop-cart.html"><i class="far fa-heart"></i></a>
-                        </li>
-                        <li>
-                            <a href="shop-cart.html">
-
-                                <img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="shop-details.html"><i class="far fa-eye"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-content">
-                    <h5> Design Low Book </h5>
-                    <h3><a href="shop-details.html">How Deal With Very <br> Bad BOOK</a></h3>
-                    <ul class="price-list">
-                        <li>$30.00</li>
-                        <li>
-                            <del>$39.99</del>
-                        </li>
-                    </ul>
-                    <ul class="author-post">
-                        <li class="authot-list">
-                            <span class="thumb">
-                                <img src="~/assets/img/testimonial/client-4.png" alt="img">
-                            </span>
-                            <span class="content">Esther</span>
-                        </li>
-                        <li class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="shop-button">
-                    <a href="shop-details.html" class="theme-btn">
-                        <i class="fa-solid fa-basket-shopping"></i> Add To
-                        Cart
-                    </a>
-                </div>
-            </div>
+            }
 
             <div class="cta-shop-box">
-                <h2 class="wow fadeInUp" data-wow-delay=".2s">
-                    Find Your Nest
-                    Books!
-                </h2>
+                <h2 class="wow fadeInUp" data-wow-delay=".2s">Find Your Nest Books!</h2>
                 <h6 class="wow fadeInUp" data-wow-delay=".4s">And get your 25% discount now!</h6>
-                <a href="shop.html" class="theme-btn white-bg wow fadeInUp" data-wow-delay=".6s">
+                <a href="@Url.Action("Index", "Shop")" class="theme-btn white-bg wow fadeInUp" data-wow-delay=".6s">
                     Shop Now <i class="fa-solid fa-arrow-right-long"></i>
                 </a>
                 <div class="girl-shape">
@@ -489,6 +282,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 

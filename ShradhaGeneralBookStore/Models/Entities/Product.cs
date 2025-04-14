@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ShradhaGeneralBookStore.Models.Entities;
 
 namespace ShradhaGeneralBookStore.Models.Entities
 {
@@ -44,6 +45,7 @@ namespace ShradhaGeneralBookStore.Models.Entities
         public string UniqueCode { get; set; }
 
         public int Stock { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<ProductImage> ProductImages { get; set; }
         [NotMapped]

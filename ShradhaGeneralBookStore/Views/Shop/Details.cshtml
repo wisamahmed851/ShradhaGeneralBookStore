@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Shop Page";
 }
-
+@model ShradhaGeneralBookStore.Models.ViewModel.ProductDetailsViewModel
 <!-- Breadcumb Section Start -->
 <div class="breadcrumb-wrapper">
     <div class="book1">
@@ -42,64 +42,55 @@
                         <div class="tab-content">
                             <div id="thumb1" class="tab-pane fade show active">
                                 <div class="shop-details-thumb">
-                                    <img src="~/assets/img/shop-details/01.png" alt="img">
+                                    <img src="@Model.CoverImageUrl" alt="Cover Image">
                                 </div>
                             </div>
-                            <div id="thumb2" class="tab-pane fade">
-                                <div class="shop-details-thumb">
-                                    <img src="~/assets/img/shop-details/02.png" alt="img">
+
+                            @for (int i = 0; i < Model.DetailImageUrls.Count; i++)
+                            {
+                                <div id="thumb@(i + 2)" class="tab-pane fade">
+                                    <div class="shop-details-thumb">
+                                        <img src="@Model.DetailImageUrls[i]" alt="Detail Image @(i + 1)">
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="thumb3" class="tab-pane fade">
-                                <div class="shop-details-thumb">
-                                    <img src="~/assets/img/shop-details/03.png" alt="img">
-                                </div>
-                            </div>
-                            <div id="thumb4" class="tab-pane fade">
-                                <div class="shop-details-thumb">
-                                    <img src="~/assets/img/shop-details/04.png" alt="img">
-                                </div>
-                            </div>
-                            <div id="thumb5" class="tab-pane fade">
-                                <div class="shop-details-thumb">
-                                    <img src="~/assets/img/shop-details/05.png" alt="img">
-                                </div>
-                            </div>
+                            }
                         </div>
+
                         <ul class="nav">
                             <li class="nav-item">
                                 <a href="#thumb1" data-bs-toggle="tab" class="nav-link active">
-                                    <img src="~/assets/img/shop-details/sm-1.png" alt="img">
+                                    <img src="@Model.CoverImageUrl" style="height: 60px; object-fit: cover;" alt="Cover Thumb">
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#thumb2" data-bs-toggle="tab" class="nav-link">
-                                    <img src="~/assets/img/shop-details/sm-2.png" alt="img">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#thumb3" data-bs-toggle="tab" class="nav-link">
-                                    <img src="~/assets/img/shop-details/sm-3.png" alt="img">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#thumb4" data-bs-toggle="tab" class="nav-link">
-                                    <img src="~/assets/img/shop-details/sm-4.png" alt="img">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#thumb5" data-bs-toggle="tab" class="nav-link">
-                                    <img src="~/assets/img/shop-details/sm-5.png" alt="img">
-                                </a>
-                            </li>
+
+                            @for (int i = 0; i < Model.DetailImageUrls.Count; i++)
+                            {
+                                <li class="nav-item">
+                                    <a href="#thumb@(i + 2)" data-bs-toggle="tab" class="nav-link">
+                                        <img src="@Model.DetailImageUrls[i]" style="height: 60px; object-fit: cover;" alt="Detail Thumb @(i + 1)">
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
+
                 </div>
                 <div class="col-lg-7">
                     <div class="shop-details-content">
                         <div class="title-wrapper">
-                            <h2>Castle The Sky</h2>
-                            <h5>Stock availability.</h5>
+                            <h2>@Model.Product.Name</h2>
+                            @if(Model.Product.Stock > 0)
+                            {
+                                <h5>
+                                    Stock availability.
+                                </h5>
+                            }
+                            else
+                            {
+                                <h5>
+                                    Stock Anavailable.
+                                </h5>
+                            }
                         </div>
                         <div class="star">
                             <a href="shop-details.html"> <i class="fas fa-star"></i></a>
@@ -110,13 +101,10 @@
                             <span>(1 Customer Reviews)</span>
                         </div>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar, tortor quis
-                            varius pretium est felis scelerisque nulla, vitae placerat justo nunc a massa. Aenean
-                            nec montes vestibulum urna vel imperdiet ipsum. Orci varius natoque penatibus et magnis
-                            dis ridicul parturient montes.
+                            @Html.Raw(Model.Product.Description)
                         </p>
                         <div class="price-list">
-                            <h3>$16.00</h3>
+                            <h3>$@Model.Product.Price</h3>
                         </div>
                         <div class="cart-wrapper">
                             <div class="quantity-basket">
@@ -174,10 +162,10 @@
                             <div class="category-list">
                                 <ul>
                                     <li>
-                                        <span>SKU:</span> FTC1020B65D
+                                        <span>SKU:</span> @Model.Product.UniqueCode
                                     </li>
                                     <li>
-                                        <span>Category:</span> Kids Toys
+                                        <span>Category:</span> @Model.Product.Subcategory.Name
                                     </li>
                                 </ul>
                                 <ul>
@@ -198,7 +186,7 @@
                                 </ul>
                                 <ul>
                                     <li>
-                                        <span>Publish Years:</span> 2021
+                                        <span>Publish Year:</span> @Model.Product.ReleaseDate.Year
                                     </li>
                                     <li>
                                         <span>Century:</span> United States
@@ -264,19 +252,7 @@
                     <div id="description" class="tab-pane fade show active" role="tabpanel">
                         <div class="description-items">
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis erat
-                                interdum, tempor turpis in, sodales ex. In hac habitasse platea dictumst. Etiam
-                                accumsan scelerisque urna, a lobortis velit vehicula ut. Maecenas porttitor dolor a
-                                velit aliquet, et euismod nibh vulputate. Duis nunc velit, lacinia vel risus in,
-                                finibus sodales augue. Aliquam lacinia imperdiet dictum. Etiam tempus finibus
-                                tortor, quis placerat arcu tristique in. Sed vitae dui a diam luctus maximus.
-                                Quisque nec felis dapibus, dapibus enim vitae, vestibulum libero. Aliquam erat
-                                volutpat. Phasellus luctus rhoncus justo. Duis a nulla sit amet justo aliquam
-                                ullamcorper. Phasellus nulla lorem, pretium et libero in, porta auctor dui. In a
-                                ornare purus, et efficitur elit. Etiam consectetur sit amet quam ut tincidunt. Donec
-                                gravida ultricies tellus ac pharetra.
-                                Praesent a pulvinar purus. Proin sollicitudin leo eget mi sagittis aliquam. Donec
-                                sollicitudin ex ac lobortis mollis. Sed eget libero nec mi
+                                @Html.Raw(Model.Product.Description)
                             </p>
                         </div>
                     </div>
@@ -703,3 +679,26 @@
         </div>
     </div>
 </section>
+
+@section Styles {
+    <style>
+        .shop-details-thumb {
+            width: 100%;
+            height: 500px; /* You can adjust the height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f8f8f8; /* Optional: to give a nice neutral background */
+            border-radius: 10px; /* Optional: rounded corners */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Optional: subtle shadow */
+        }
+
+            .shop-details-thumb img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+    </style>
+}

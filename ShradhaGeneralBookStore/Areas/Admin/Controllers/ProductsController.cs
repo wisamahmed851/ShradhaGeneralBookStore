@@ -376,8 +376,6 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-        [HttpGet]
         public IActionResult GetProductDetails(int id)
         {
             var product = _context.Product
@@ -392,14 +390,40 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            // Serialize manually to avoid circular reference issues
-            var json = JsonConvert.SerializeObject(product, new JsonSerializerSettings
+
+            var viewModel = new DetailsProductViewModel
+            {
+                Name = product.Name,
+                Description = product.Description,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category?.Name,
+                SubcategoryId = product.SubcategoryId,
+                SubcategoryName = product.Subcategory?.Name,
+                AuthorId = (int)product.AuthorId,
+                AuthorName = product.Author?.Name,
+                PublisherId = (int)product.PublisherId,
+                PublisherName = product.Publisher?.Name,
+                Price = product.Price,
+                ReleaseDate = product.ReleaseDate,
+                Version = product.Version,
+                ProductType = product.ProductType,
+                Stock = product.Stock,
+                CoverImage = product.ProductImages
+                    .FirstOrDefault(p => p.ImageType == ProductImageType.Cover)?.ImageUrl?.Replace("~", ""),
+                DetailImages = product.ProductImages
+                    .Where(p => p.ImageType == ProductImageType.Detail)
+                    .Select(p => p.ImageUrl?.Replace("~", ""))
+                    .ToList()
+            };
+
+            var json = JsonConvert.SerializeObject(viewModel, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
-            return Content(json, "application/json");
 
+            return Content(json, "application/json");
         }
+
 
         public async Task<IActionResult> Delete(int id)
         {

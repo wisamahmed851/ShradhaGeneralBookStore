@@ -31,6 +31,7 @@
     <!--<< MeanMenu.css >>-->
     <link rel="stylesheet" href="~/assets/css/meanmenu.css">
     <!--<< Swiper Bundle.css >>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css">
     <!--<< Nice Select.css >>-->
     <link rel="stylesheet" href="~/assets/css/nice-select.css">
@@ -38,6 +39,7 @@
     <link rel="stylesheet" href="~/assets/css/icomoon.css">
     <!--<< Main.css >>-->
     <link rel="stylesheet" href="~/assets/css/main.css">
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
@@ -242,7 +244,6 @@
                                                     </a>
                                                     <ul class="submenu">
                                                         <li><a href="@Url.Action("index", "Shop")">Shop Default</a></li>
-                                                        <li><a href="@Url.Action("Details", "Shop")">Shop Details</a></li>
                                                         <li><a href="@Url.Action("Cart", "Shop")">Shop Cart</a></li>
                                                         <li><a href="@Url.Action("Wishlist", "Shop")">Wishlist</a></li>
                                                         <li><a href="checkout.html">Checkout</a></li>
@@ -365,7 +366,6 @@
                                                     </a>
                                                     <ul class="submenu">
                                                         <li><a href="@Url.Action("index", "Shop")">Shop Default</a></li>
-                                                        <li><a href="@Url.Action("Details", "Shop")">Shop Details</a></li>
                                                         <li><a href="@Url.Action("Cart", "Shop")">Shop Cart</a></li>
                                                         <li><a href="@Url.Action("Wishlist", "Shop")">Wishlist</a></li>
                                                         <li><a href="checkout.html">Checkout</a></li>
@@ -675,6 +675,7 @@
     <script src="~/assets/js/jquery.counterup.min.js"></script>
     <!--<< Swiper Slider Js >>-->
     <script src="~/assets/js/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!--<< MeanMenu Js >>-->
     <script src="~/assets/js/jquery.meanmenu.min.js"></script>
     <!--<< Magnific Popup Js >>-->
@@ -683,6 +684,7 @@
     <script src="~/assets/js/wow.min.js"></script>
     <!-- Gsap -->
     <script src="~/assets/js/gsap.min.js"></script>
+
     <!--<< Main.js >>-->
     <script src="~/assets/js/main.js"></script>
     <script>

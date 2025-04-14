@@ -114,30 +114,49 @@
                 type: 'GET',
                 data: { id: productId },
                 dataType: 'json',
-                success: function (product) {
-                        console.log("Received product:", product); // ✅ Already an object
-                    const html = `
-                        <h4 class="text-xl font-bold mb-2">${product.name}</h4>
-                        <p><strong>Category:</strong> ${product.category?.name || "N/A"}</p>
-                        <p><strong>Subcategory:</strong> ${product.subcategory?.name || "N/A"}</p>
-                        <p><strong>Author:</strong> ${product.author?.name || "N/A"}</p>
-                        <p><strong>Publisher:</strong> ${product.publisher?.name || "N/A"}</p>
-                        <p><strong>Price:</strong> $${product.price}</p>
-                        <p><strong>Stock:</strong> ${product.stock}</p>
-                        <p><strong>Release Date:</strong> ${new Date(product.releaseDate).toLocaleDateString()}</p>
-                        <p><strong>Version:</strong> ${product.version}</p>
-                        <p><strong>Product Type:</strong> ${product.productType}</p>
-                        <p><strong>Unique Code:</strong> ${product.uniqueCode}</p>
-                        <p class="mt-2"><strong>Description:</strong><br>${product.description}</p>
-                        <div class="mt-4 flex flex-wrap gap-3">
-                            ${product.productImages?.map(img => `
-                                <img src="${img.imageUrl}" alt="Image" class="w-24 h-24 object-cover rounded shadow" />
-                            `).join('') || "<p>No images available.</p>"}
-                        </div>
-                    `;
-                    document.getElementById("productDetailsContent").innerHTML = html;
-                    console.log("Received product:", product);
-                },
+                              success: function (product) {
+            const html = `
+                <h4 class="text-xl font-bold mb-2">${product.Name}</h4>
+                <p><strong>Category:</strong> ${product.CategoryName || "N/A"}</p>
+                <p><strong>Subcategory:</strong> ${product.SubcategoryName || "N/A"}</p>
+                <p><strong>Author:</strong> ${product.AuthorName || "N/A"}</p>
+                <p><strong>Publisher:</strong> ${product.PublisherName || "N/A"}</p>
+                <p><strong>Price:</strong> $${product.Price}</p>
+                <p><strong>Stock:</strong> ${product.Stock}</p>
+                <p><strong>Release Date:</strong> ${new Date(product.ReleaseDate).toLocaleDateString()}</p>
+                <p><strong>Version:</strong> ${product.Version}</p>
+                <p><strong>Product Type:</strong> ${product.ProductType}</p>
+                <p><strong>Description:</strong><br>${product.Description}</p>
+
+                <div class="mt-4">
+                    <h5 class="font-semibold mb-2">Cover Image</h5>
+                    <div class="flex flex-wrap gap-3">
+                        ${product.CoverImage
+                            ? `<div class="border rounded-lg p-2 d-flex">
+                                    <img src="${product.CoverImage}" width="100" class="rounded shadow" />
+                               </div>`
+                            : "<p>No cover image available.</p>"
+                        }
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h5 class="font-semibold mb-2">Detail Images</h5>
+                    <div class="flex flex-wrap gap-4">
+                        ${product.DetailImages?.length > 0
+                            ? product.DetailImages.map(img =>
+                                `<div class="border rounded-lg p-2 d-flex">
+                                    <img src="${img}" width="100" class="rounded shadow" />
+                                </div>`).join('')
+                            : "<p>No detail images available.</p>"
+                        }
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("productDetailsContent").innerHTML = html;
+        },
+
                 error: function () {
                     document.getElementById("productDetailsContent").innerHTML = "<p class='text-red-500'>Failed to load product details.</p>";
                 }
