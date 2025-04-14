@@ -15,10 +15,46 @@ namespace ShradhaGeneralBookStore.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
         }
-        public IActionResult index()
+        public async Task<IActionResult> Index(string searchTerm, int? categoryId, decimal? minPrice, decimal? maxPrice)
         {
-            return View();
+            var productsQuery = _context.Product
+                .Include(p => p.ProductImages)
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .AsQueryable();
+            var subcategories = _context.Subcategorie.ToList();
+
+            var subByCat = subcategories
+                .GroupBy(s => s.CategoryId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            if (!string.IsNullOrEmpty(searchTerm))
+                productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
+
+            if (categoryId.HasValue)
+                productsQuery = productsQuery.Where(p => p.CategoryId == categoryId.Value);
+
+            if (minPrice.HasValue)
+                productsQuery = productsQuery.Where(p => p.Price >= minPrice.Value);
+
+            if (maxPrice.HasValue)
+                productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
+
+            var viewModel = new ShopViewModel
+            {
+                Categories = await _context.Categorie.ToListAsync(),
+                Subcategories = subcategories,
+                Products = await productsQuery.ToListAsync(),
+                SubcategoriesByCategory = subByCat,
+                SearchTerm = searchTerm,
+                SelectedCategoryId = categoryId,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice
+            };
+
+            return View(viewModel);
         }
+
 
         public async Task<IActionResult> Details(int id)
         {
@@ -43,7 +79,6 @@ namespace ShradhaGeneralBookStore.Controllers
                     .Select(p => p.ImageUrl)
                     .ToList()
             };
-
             return View(viewModel);
         }
 
