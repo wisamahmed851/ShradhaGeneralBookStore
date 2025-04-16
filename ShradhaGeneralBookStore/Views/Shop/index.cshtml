@@ -1,11 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
+﻿
 @{
     ViewData["Title"] = "Home Page";
+}
+@section Styles{
+    <style>
+        .selected {
+            font-weight: bold;
+            color: #FF6500;
+            text-decoration: underline;
+        }
+    </style>
 }
 <!-- Breadcumb Section Start -->
 <div class="breadcrumb-wrapper">
@@ -101,8 +105,8 @@
                                             {
                                                 foreach (var sub in Model.SubcategoriesByCategory[category.Id])
                                                 {
-                                                    <li>
-                                                        <a href="#" class="subcategory-filter" data-subcategory-id="@sub.Id">@sub.Name</a>
+                                                    <li class="ms-4">
+                                                        <a class="subcategory-filter" data-subcategory-id="@sub.Id">@sub.Name</a>
                                                     </li>
                                                 }
                                             }
@@ -245,7 +249,9 @@
                         </div>
                     </div>
                 </div>
-                @await Html.PartialAsync("_ProductListPartial", Model.Products)
+                @await Html.PartialAsync("_ProductListPartial", (ShradhaGeneralBookStore.Models.ViewModel.ShopViewModel)Model)
+
+
             </div>
         </div>
     </div>
@@ -276,18 +282,35 @@
             });
         }
 
-        // Category Click
+        
+
+             // Category Click
         $(document).on('click', '.category-filter', function (e) {
             e.preventDefault();
             selectedCategoryId = $(this).data('category-id');
             selectedSubcategoryId = null; // Reset subcategory
+
+            // Remove selected class from all
+            $('.category-filter').removeClass('selected');
+            $('.subcategory-filter').removeClass('selected');
+
+            // Add selected class to this
+            $(this).addClass('selected');
+
             fetchFilteredProducts();
         });
-
-        // Subcategory Click
-        $(document).on('click', '.subcategory-filter', function (e) {
+         $(document).on('click', '.subcategory-filter', function (e) {
             e.preventDefault();
             selectedSubcategoryId = $(this).data('subcategory-id');
+            selectedCategoryId = null; // Reset subcategory
+
+            // Remove selected class from all
+            $('.category-filter').removeClass('selected');
+            $('.subcategory-filter').removeClass('selected');
+
+            // Add selected class to this
+            $(this).addClass('selected');
+
             fetchFilteredProducts();
         });
 

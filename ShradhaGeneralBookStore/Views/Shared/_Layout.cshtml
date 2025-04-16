@@ -39,6 +39,8 @@
     <link rel="stylesheet" href="~/assets/css/icomoon.css">
     <!--<< Main.css >>-->
     <link rel="stylesheet" href="~/assets/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @RenderSection("Styles", required: false)
 </head>
 
@@ -244,7 +246,7 @@
                                                     </a>
                                                     <ul class="submenu">
                                                         <li><a href="@Url.Action("index", "Shop")">Shop Default</a></li>
-                                                        <li><a href="@Url.Action("Cart", "Shop")">Shop Cart</a></li>
+                                                        <li><a href="@Url.Action("Index", "Cart")">Shop Cart</a></li>
                                                         <li><a href="@Url.Action("Wishlist", "Shop")">Wishlist</a></li>
                                                         <li><a href="checkout.html">Checkout</a></li>
                                                     </ul>
@@ -316,7 +318,7 @@
                                     <a href="wishlist.html" class="cart-icon">
                                         <i class="fa-regular fa-heart"></i>
                                     </a>
-                                    <a href="shop-cart.html" class="cart-icon">
+                                    <a href="@Url.Action("index", "Cart")" class="cart-icon">
                                         <i class="fa-regular fa-cart-shopping"></i>
                                     </a>
                                     <div class="header-humbager ml-30">
@@ -366,7 +368,7 @@
                                                     </a>
                                                     <ul class="submenu">
                                                         <li><a href="@Url.Action("index", "Shop")">Shop Default</a></li>
-                                                        <li><a href="@Url.Action("Cart", "Shop")">Shop Cart</a></li>
+                                                        <li><a href="@Url.Action("Index", "Cart")">Shop Cart</a></li>
                                                         <li><a href="@Url.Action("Wishlist", "Shop")">Wishlist</a></li>
                                                         <li><a href="checkout.html">Checkout</a></li>
                                                     </ul>
@@ -438,7 +440,7 @@
                                     <a href="wishlist.html" class="cart-icon">
                                         <i class="fa-regular fa-heart"></i>
                                     </a>
-                                    <a href="shop-cart.html" class="cart-icon">
+                                    <a href="@Url.Action("index", "Cart")" class="cart-icon">
                                         <i class="fa-regular fa-cart-shopping"></i>
                                     </a>
                                     <div class="header-humbager ml-30">

@@ -13,6 +13,8 @@ builder.Services.AddSession();
 
 builder.Services.AddControllersWithViews()
     .AddSessionStateTempDataProvider();
+// Register the custom filter here 👇
+builder.Services.AddScoped<AuthorizeUserAttribute>();
 
 var app = builder.Build();
 
@@ -27,9 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseSession(); // ✅ Must come before UseAuthorization
+app.UseSession(); 
 
-// ✅ Use your custom admin authentication middleware here
 app.UseMiddleware<AdminAuthMiddleware>();
 
 app.UseAuthorization();

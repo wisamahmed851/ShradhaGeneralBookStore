@@ -15,45 +15,57 @@ namespace ShradhaGeneralBookStore.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
         }
-        public async Task<IActionResult> Index(string searchTerm, int? categoryId, decimal? minPrice, decimal? maxPrice)
-        {
-            var productsQuery = _context.Product
-                .Include(p => p.ProductImages)
-                .Include(p => p.Category)
-                .Include(p => p.Subcategory)
-                .AsQueryable();
-            var subcategories = _context.Subcategorie.ToList();
-
-            var subByCat = subcategories
-                .GroupBy(s => s.CategoryId)
-                .ToDictionary(g => g.Key, g => g.ToList());
-
-            if (!string.IsNullOrEmpty(searchTerm))
-                productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
-
-            if (categoryId.HasValue)
-                productsQuery = productsQuery.Where(p => p.CategoryId == categoryId.Value);
-
-            if (minPrice.HasValue)
-                productsQuery = productsQuery.Where(p => p.Price >= minPrice.Value);
-
-            if (maxPrice.HasValue)
-                productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
-
-            var viewModel = new ShopViewModel
+        public async Task<IActionResult> Index(string searchTerm, int? categoryId, int? subcategoryId, decimal? minPrice, decimal? maxPrice)
             {
-                Categories = await _context.Categorie.ToListAsync(),
-                Subcategories = subcategories,
-                Products = await productsQuery.ToListAsync(),
-                SubcategoriesByCategory = subByCat,
-                SearchTerm = searchTerm,
-                SelectedCategoryId = categoryId,
-                MinPrice = minPrice,
-                MaxPrice = maxPrice
-            };
+                var productsQuery = _context.Product
+                    .Include(p => p.ProductImages)
+                    .Include(p => p.Category)
+                    .Include(p => p.Subcategory)
+                    .AsQueryable();
 
-            return View(viewModel);
-        }
+                var subcategories = _context.Subcategorie.ToList();
+
+                var subByCat = subcategories
+                    .GroupBy(s => s.CategoryId)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                    productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
+
+                if (categoryId.HasValue)
+                    productsQuery = productsQuery.Where(p => p.CategoryId == categoryId.Value);
+
+                if (subcategoryId.HasValue)
+                    productsQuery = productsQuery.Where(p => p.SubcategoryId == subcategoryId.Value);
+
+                if (minPrice.HasValue)
+                    productsQuery = productsQuery.Where(p => p.Price >= minPrice.Value);
+
+                if (maxPrice.HasValue)
+                    productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
+
+                var viewModel = new ShopViewModel
+                {
+                    Categories = await _context.Categorie.ToListAsync(),
+                    Subcategories = subcategories,
+                    Products = await productsQuery.ToListAsync(),
+                    SubcategoriesByCategory = subByCat,
+                    SearchTerm = searchTerm,
+                    SelectedCategoryId = categoryId,
+                    MinPrice = minPrice,
+                    MaxPrice = maxPrice
+                };
+
+                // 👇 Check if request is AJAX
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    // Return only the product partial
+                    return PartialView("_ProductListPartial", viewModel);
+                }
+
+                // Otherwise, return full view
+                return View(viewModel);
+            }
 
 
         public async Task<IActionResult> Details(int id)

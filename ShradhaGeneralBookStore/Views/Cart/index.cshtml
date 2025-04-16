@@ -1,0 +1,201 @@
+﻿@using ShradhaGeneralBookStore.Models.Entities
+@model List<ShradhaGeneralBookStore.Models.Entities.Cart>
+<!-- Breadcumb Section Start -->
+<div class="breadcrumb-wrapper">
+    <div class="book1">
+        <img src="~/assets/img/hero/book1.png" alt="book">
+    </div>
+    <div class="book2">
+        <img src="~/assets/img/hero/book2.png" alt="book">
+    </div>
+    <div class="container">
+        <div class="page-heading">
+            <h1>Cart</h1>
+            <div class="page-header">
+                <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </li>
+                    <li>
+                        Cart
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Shop Cart Section Start -->
+<div class="cart-section section-padding">
+    <div class="container">
+        <div class="main-cart-wrapper">
+            <div class="row g-5">
+                <div class="col-xl-9">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cart in Model)
+                                {
+                                    var product = cart.Product;
+                                    var coverImage = product.ProductImages
+                                    .FirstOrDefault(img => img.ImageType == ProductImageType.Cover)?.ImageUrl;
+                                    <tr>
+                                        <td>
+                                            <span class="d-flex gap-5 align-items-center">
+                                                <a href="@Url.Action("Remove", "Cart", new { id = cart.Id })" class="remove-icon">
+                                                    <img src="~/assets/img/icon/icon-9.svg" alt="remove">
+                                                </a>
+                                                <span class="cart">
+                                                    <img src="@coverImage" alt="@product.Name" style="width: 60px; height: auto;" />
+                                                </span>
+                                                <span class="cart-title">
+                                                    @product.Name
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="cart-price">$@product.Price</span>
+                                        </td>
+                                        <td>
+                                            <span class="quantity-basket">
+                                                <span class="qty">
+                                                    <button class="qtyminus" data-cart-id="@cart.Id">−</button>
+                                                    <input type="number" readonly value="@cart.Quantity" id="qty-input-@cart.Id">
+                                                    <button class="qtyplus" data-cart-id="@cart.Id">+</button>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="subtotal-price" id="subtotal-@cart.Id">$@(product.Price * cart.Quantity)</span>
+                                        </td>
+
+                                    </tr>
+
+                                }
+                                
+                                @{
+                                    var subtotal = Model.Sum(c => c.Product.Price * c.Quantity);
+                                }
+                            </tbody>
+                        </table>    
+                    </div>
+                    <div class="cart-wrapper-footer">
+                        <form action="https://gramentheme.com/html/bookle/shop-cart.html">
+                            <div class="input-area">
+                                <input type="text" name="Coupon Code" id="CouponCode" placeholder="Coupon Code">
+                                <button type="submit" class="theme-btn">
+                                    Apply
+                                </button>
+                            </div>
+                        </form>
+                        <a href="shop-cart.html" class="theme-btn">
+                            Update Cart
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="table-responsive cart-total">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Cart Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="d-flex gap-5 align-items-center justify-content-between">
+                                            <span class="sub-title">Subtotal:</span>
+                                            <span class="sub-price">$@subtotal</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="d-flex gap-5 align-items-center  justify-content-between">
+                                            <span class="sub-title">Shipping:</span>
+                                            <span class="sub-text">
+                                                Free
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="d-flex gap-5 align-items-center  justify-content-between">
+                                            <span class="sub-title">Total:  </span>
+                                            <span class="sub-price sub-price-total">$@subtotal</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="checkout.html" class="theme-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(".qtyplus, .qtyminus").click(function () {
+            const cartId = $(this).data("cart-id");
+            const input = $("#qty-input-" + cartId);
+            let currentQty = parseInt(input.val());
+
+            // Check for minimum quantity
+            if ($(this).hasClass("qtyminus") && currentQty === 1) {
+                // Show alert or toast here
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops!',
+                        text: "You can't decrease the quantity below 1.",
+                        confirmButtonColor: '#3085d6'
+                    });
+
+                return; // Stop the function here
+            }
+
+            // Increase or decrease quantity
+            if ($(this).hasClass("qtyplus")) {
+                currentQty++;
+            } else {
+                currentQty--;
+            }
+
+            // Send AJAX to update quantity
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateQuantity", "Cart")",
+                data: {
+                    cartId: cartId,
+                    quantity: currentQty
+                },
+                success: function (response) {
+                    input.val(currentQty);
+                    $("#subtotal-" + cartId).text("$" + response.itemSubtotal.toFixed(2));
+                    $(".sub-price, .sub-price-total").text("$" + response.cartTotal.toFixed(2));
+                },
+                error: function () {
+                    alert("Something went wrong.");
+                }
+            });
+        });
+    </script>
+
+
+}
