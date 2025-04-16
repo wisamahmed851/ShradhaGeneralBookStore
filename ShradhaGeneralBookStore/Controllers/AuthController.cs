@@ -116,10 +116,10 @@ namespace ShradhaGeneralBookStore.Controllers
         //        : RedirectToAction("Index", "Home");
         //}
 
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.Session.Clear(); // Clears all session data
-        //    return RedirectToAction("Index", "Home"); // Redirect to home or login page
-        //}
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Clears all session data
+            return RedirectToAction("Index", "Home"); // Redirect to home or login page
+        }
     }
 }
