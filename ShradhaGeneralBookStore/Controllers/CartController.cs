@@ -43,7 +43,8 @@ namespace ShradhaGeneralBookStore.Controllers
 
             if (userId == null)
                 return RedirectToAction("Index", "Home", new { showLogin = true });
-
+            if (productId == null)
+                return RedirectToAction("Index", "Home");
             // Check if product already in cart
             var existing = _context.Cart.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
 

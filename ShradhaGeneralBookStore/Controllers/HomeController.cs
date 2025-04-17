@@ -69,7 +69,7 @@ namespace ShradhaGeneralBookStore.Controllers
                 .OrderBy(p => p.Price) 
                 .Take(3)
                 .ToList();
-
+            
             // Send to ViewModel
             var viewModel = new HomePageViewModel
             {

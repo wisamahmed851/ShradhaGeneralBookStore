@@ -1,0 +1,241 @@
+﻿@model ShradhaGeneralBookStore.Models.ViewModel.CheckoutViewModel;
+<!-- Breadcumb Section Start -->
+    <div class="breadcrumb-wrapper">
+        <div class="book1">
+            <img src="~/assets/img/hero/book1.png" alt="book">
+        </div>
+        <div class="book2">
+            <img src="~/assets/img/hero/book2.png" alt="book">
+        </div>
+        <div class="container">
+            <div class="page-heading">
+                <h1>Checkout</h1>
+                <div class="page-header">
+                    <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
+                        <li>
+                            <a href="index.html">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </li>
+                        <li>
+                            Checkout
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Section Start -->
+    <section class="checkout-section fix section-padding">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-9">
+                <form asp-action="PlaceOrder" method="post" asp-controller="Order">
+                        <div class="checkout-single-wrapper">
+                            <div class="checkout-single boxshado-single">
+                                <h4>Billing Details</h4>
+                                <div class="checkout-single-form">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6">
+                                            <div class="input-single">
+                                                <span>First Name*</span>
+                                                <input type="text" asp-for="FullName" name="user-first-name" id="userFirstName" required=""
+                                                    placeholder="First Name">
+                                            </div>
+                                        </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Area*</span>
+                                            <select asp-for="Area" id="AreaSelect" class="form-control">
+                                                <option value="0">Select Area</option>
+                                                <option value="1">North Nazimabad</option>
+                                                <option value="2">Nazimabad</option>
+                                                <option value="3">Gohar</option>
+                                                <option value="4">Gulsahan</option>
+                                                <option value="5">Malir</option>
+                                                <option value="6">Korangi</option>
+                                                <option value="7">Landhi</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="input-single">
+                                                <span>Street Address*</span>
+                                            <input asp-for="Address" name="user-address" id="userAddress2"
+                                                    placeholder="Apartment, suite, unit, etc. (optional)">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="input-single">
+                                                <span>Town/ City*</span>
+                                                <input name="towncity" id="towncity">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="input-single">
+                                                <span>Phone*</span>
+                                            <input name="phone" asp-for="Phone" id="phone" placeholder="phone">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="input-single">
+                                                <span>Email Address*</span>
+                                            <input name="email" asp-for="Email" id="email22" placeholder="email">
+                                            </div>
+                                        </div>
+                                    <div class="col-lg-12 mt-4">
+                                        <button type="submit" class="btn btn-primary w-100" style="padding: 14px 30px; font-size: 16px;">
+                                            Place Order
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-12 mt-4">
+                                        <div class="checkout-item d-flex justify-content-between">
+                                            <p>Shipping</p>
+                                            <div class="shopping-items">
+                                                <div class="form-check d-flex align-items-center from-customradio">
+                                                    <label class="form-check-label">Free Shipping</label>
+                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                           value="0" checked>
+                                                </div>
+                                                <div class="form-check d-flex align-items-center from-customradio">
+                                                    <label class="form-check-label">Local: $15.00</label>
+                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                           value="15">
+                                                </div>
+                                                <div class="form-check d-flex align-items-center from-customradio">
+                                                    <label class="form-check-label" style="font-size:14px;">Flat rate: $10.00</label>
+                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                           value="10">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3">
+                    <div class="checkout-order-area">
+                        <h3>Our Order</h3>
+                        <div class="product-checout-area">
+                            <div class="checkout-item d-flex align-items-center justify-content-between">
+                                <p>Product</p>
+                                <p>Subtotal</p>
+                            </div>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <div class="checkout-item d-flex align-items-center justify-content-between">
+                                <p>@item.Product.Name</p>
+                                <p>@(item.Quantity * item.Product.Price)</p>
+                            </div>
+                        }
+                        
+                        <div class="checkout-item d-flex align-items-center justify-content-between">
+                            <p>Total</p>
+                            <p id="grand-total">@Model.TotalAmount</p>
+                        </div>
+                            <div class="checkout-item-2">
+                                <div class="form-check-2 d-flex align-items-center from-customradio-2">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault1222">
+                                    <label class="form-check-label" for="flexRadioDefault1222">
+                                        Direct bank transfer
+                                    </label>
+                                </div>
+                                <p>
+                                    Make your payment directly into our bank account please use your Order ID as the
+                                    payment reference. Your order will not be shipped until the funds have cleared in
+                                    our account.
+                                </p>
+                                <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault12224">
+                                    <label class="form-check-label" for="flexRadioDefault12224">
+                                        Cash on delivery
+                                    </label>
+                                </div>
+                                <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault12225">
+                                    <label class="form-check-label" for="flexRadioDefault12225">
+                                        Paypal
+                                    </label>
+                                    <ul class="brand-logo">
+                                        <li>
+                                            <a href="checkout.html">
+                                                <img src="~/assets/img/PayPal.png" alt="img">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="checkout.html">
+                                                <img src="~/assets/img/GooglePay.png" alt="img">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="checkout.html">
+                                                <img src="~/assets/img/Mastercard2.png" alt="img">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        <div class="checkout-item-2"><
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@section Styles {
+    <style>
+        .input-single select.form-control {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #e4e4e4;
+            border-radius: 6px;
+            background-color: #000;
+            font-size: 14px;
+            color: #333;
+            padding: 19px 24px;
+            appearance: none;
+            margin-top: 30px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+            .input-single select.form-control:focus {
+                border-color: #1d4ed8; /* optional: use your theme's focus color */
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.1); /* optional: soft glow */
+            }
+
+    </style>
+}
+@section Scripts {
+    <script>
+        const baseTotal = parseFloat("@Model.TotalAmount");
+        const grandTotalElement = document.getElementById("grand-total");
+
+        document.querySelectorAll('.shipping-option').forEach(option => {
+            option.addEventListener('change', function () {
+                const shippingFee = parseFloat(this.value);
+                const newTotal = baseTotal + shippingFee;
+                grandTotalElement.textContent = newTotal.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                });
+            });
+        });
+    </script>
+}

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Models\enums\" />
+    <Folder Include="Views\NewFolder\" />
   </ItemGroup>
 
 </Project>

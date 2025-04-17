@@ -9870,7 +9870,12 @@ textarea,
 .checkout-single
 .checkout-single-form
 .input-single
-input {
+input,
+.checkout-single-wrapper
+.checkout-single
+.checkout-single-form
+.input-single
+#AreaSelect {
     width: 100%;
     outline: none;
     box-shadow: none;
@@ -9881,6 +9886,7 @@ input {
     text-transform: capitalize;
     font-weight: 500;
 }
+
 
     .checkout-single-wrapper
     .checkout-single
