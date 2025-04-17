@@ -35,7 +35,7 @@ namespace ShradhaGeneralBookStore.Datas
                 Id = 1,
                 FullName = "Admin",
                 Email = "admin@gmail.com",
-                Password = "123456789", // Hash in real apps
+                Password = "AQAAAAIAAYagAAAAEM+fExcaDSugZ1EnuJv9N/cmcMLvPwQ7JBrH/3aSd5gBqUyENfh4hWXufEYCWhGyhg==", // Hash in real apps
                 Phone = null,
                 Address = null,
                 Role = "Admin",

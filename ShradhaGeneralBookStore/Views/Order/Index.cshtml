@@ -32,9 +32,9 @@
     <!-- Checkout Section Start -->
     <section class="checkout-section fix section-padding">
         <div class="container">
+          <form asp-action="PlaceOrder" method="post" asp-controller="Order">
             <div class="row g-5">
                 <div class="col-lg-9">
-                <form asp-action="PlaceOrder" method="post" asp-controller="Order">
                         <div class="checkout-single-wrapper">
                             <div class="checkout-single boxshado-single">
                                 <h4>Billing Details</h4>
@@ -43,7 +43,7 @@
                                         <div class="col-lg-6">
                                             <div class="input-single">
                                                 <span>First Name*</span>
-                                                <input type="text" asp-for="FullName" name="user-first-name" id="userFirstName" required=""
+                                            <input type="text" asp-for="FullName" id="userFirstName" required=""
                                                     placeholder="First Name">
                                             </div>
                                         </div>
@@ -66,7 +66,7 @@
                                         <div class="col-lg-12">
                                             <div class="input-single">
                                                 <span>Street Address*</span>
-                                            <input asp-for="Address" name="user-address" id="userAddress2"
+                                            <input asp-for="Address" id="userAddress2"
                                                     placeholder="Apartment, suite, unit, etc. (optional)">
                                             </div>
                                         </div>
@@ -79,7 +79,7 @@
                                         <div class="col-lg-12">
                                             <div class="input-single">
                                                 <span>Phone*</span>
-                                            <input name="phone" asp-for="Phone" id="phone" placeholder="phone">
+                                            <input asp-for="Phone" id="phone" placeholder="phone">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -93,33 +93,10 @@
                                             Place Order
                                         </button>
                                     </div>
-                                    <div class="col-lg-12 mt-4">
-                                        <div class="checkout-item d-flex justify-content-between">
-                                            <p>Shipping</p>
-                                            <div class="shopping-items">
-                                                <div class="form-check d-flex align-items-center from-customradio">
-                                                    <label class="form-check-label">Free Shipping</label>
-                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
-                                                           value="0" checked>
-                                                </div>
-                                                <div class="form-check d-flex align-items-center from-customradio">
-                                                    <label class="form-check-label">Local: $15.00</label>
-                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
-                                                           value="15">
-                                                </div>
-                                                <div class="form-check d-flex align-items-center from-customradio">
-                                                    <label class="form-check-label" style="font-size:14px;">Flat rate: $10.00</label>
-                                                    <input class="form-check-input shipping-option" type="radio" name="shipping"
-                                                           value="10">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
                 </div>
                 <div class="col-lg-3">
                     <div class="checkout-order-area">
@@ -139,7 +116,10 @@
                         
                         <div class="checkout-item d-flex align-items-center justify-content-between">
                             <p>Total</p>
+                            
                             <p id="grand-total">@Model.TotalAmount</p>
+                                <input type="hidden" asp-for="TotalAmount" value="@Model.TotalAmount" id="grand-total" required=""
+                                       placeholder="First Name">
                         </div>
                             <div class="checkout-item-2">
                                 <div class="form-check-2 d-flex align-items-center from-customradio-2">
@@ -188,13 +168,36 @@
 
 
                             </div>
-                        <div class="checkout-item-2"><
+                        <div class="checkout-item-2">
+                            <div class="col-lg-12 mt-4">
+                                <div class="checkout-item d-flex justify-content-between">
+                                    <p>Shipping</p>
+                                    <div class="shopping-items">
+                                        <div class="form-check d-flex align-items-center from-customradio">
+                                            <label class="form-check-label">Free Shipping</label>
+                                            <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                   value="0" checked>
+                                        </div>
+                                        <div class="form-check d-flex align-items-center from-customradio">
+                                            <label class="form-check-label">Local: $15.00</label>
+                                            <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                   value="15">
+                                        </div>
+                                        <div class="form-check d-flex align-items-center from-customradio">
+                                            <label class="form-check-label" style="font-size:14px;">Flat rate: $10.00</label>
+                                            <input class="form-check-input shipping-option" type="radio" name="shipping"
+                                                   value="10">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-            </div>
+             </div>
+          </form>
         </div>
     </section>
 @section Styles {
