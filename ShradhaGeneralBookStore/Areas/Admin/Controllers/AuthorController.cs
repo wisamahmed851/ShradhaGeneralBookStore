@@ -26,9 +26,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
 
            [HttpPost]
         public async Task<IActionResult> Create(AddAuthorViewModel model)
-
             {
-
                 if (!ModelState.IsValid)
                     return View(model);
 

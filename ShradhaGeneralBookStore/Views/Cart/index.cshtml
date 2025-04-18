@@ -1,39 +1,38 @@
-﻿@using ShradhaGeneralBookStore.Models.Entities
-@model List<ShradhaGeneralBookStore.Models.Entities.Cart>
-<!-- Breadcumb Section Start -->
-<div class="breadcrumb-wrapper">
-    <div class="book1">
-        <img src="~/assets/img/hero/book1.png" alt="book">
-    </div>
-    <div class="book2">
-        <img src="~/assets/img/hero/book2.png" alt="book">
-    </div>
-    <div class="container">
-        <div class="page-heading">
-            <h1>Cart</h1>
-            <div class="page-header">
-                <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
-                    <li>
-                        <a href="index.html">
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </li>
-                    <li>
-                        Cart
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Shop Cart Section Start -->
+﻿@{
+    var cartItems = Model.cartItems;
+    var orders = Model.orders;
+
+    var subtotal = cartItems.Sum(c => c.Product.Price * c.Quantity);
+    var orderNumber = orders.Count > 0 ? orders.LastOrDefault()?.OrderNumber : null;
+}
+
+<!-- Cart Section -->
 <div class="cart-section section-padding">
     <div class="container">
         <div class="main-cart-wrapper">
             <div class="row g-5">
+                <div class="col-xl-9">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Latest Order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="d-flex gap-5 align-items-center justify-content-between">
+                                            <span class="sub-title">Order Number:</span>
+                                            <span class="sub-price">@orderNumber</span> <!-- Display the last order number -->
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="col-xl-9">
                     <div class="table-responsive">
                         <table class="table">
@@ -46,7 +45,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var cart in Model)
+                                @foreach (var cart in cartItems)
                                 {
                                     var product = cart.Product;
                                     var coverImage = product.ProductImages
@@ -80,31 +79,29 @@
                                         <td>
                                             <span class="subtotal-price" id="subtotal-@cart.Id">$@(product.Price * cart.Quantity)</span>
                                         </td>
-
                                     </tr>
+                                }
 
-                                }
-                                
-                                @{
-                                    var subtotal = Model.Sum(c => c.Product.Price * c.Quantity);
-                                }
+                                <tr>
+                                    <td colspan="3" class="text-end">Subtotal:</td>
+                                    <td>$@subtotal</td>
+                                </tr>
                             </tbody>
-                        </table>    
+                        </table>
                     </div>
+
                     <div class="cart-wrapper-footer">
-                        <form action="https://gramentheme.com/html/bookle/shop-cart.html">
+                        <form>
                             <div class="input-area">
-                                <input type="text" name="Coupon Code" id="CouponCode" placeholder="Coupon Code">
+                                <input type="text" name="Order Number" id="CouponCode" placeholder="Track Order By Order Number">
                                 <button type="submit" class="theme-btn">
-                                    Apply
+                                    Search
                                 </button>
                             </div>
                         </form>
-                        <a href="shop-cart.html" class="theme-btn">
-                            Update Cart
-                        </a>
                     </div>
                 </div>
+
                 <div class="col-xl-3">
                     <div class="table-responsive cart-total">
                         <table class="table">
@@ -124,18 +121,16 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="d-flex gap-5 align-items-center  justify-content-between">
+                                        <span class="d-flex gap-5 align-items-center justify-content-between">
                                             <span class="sub-title">Shipping:</span>
-                                            <span class="sub-text">
-                                                Free
-                                            </span>
+                                            <span class="sub-text">Free</span>
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="d-flex gap-5 align-items-center  justify-content-between">
-                                            <span class="sub-title">Total:  </span>
+                                        <span class="d-flex gap-5 align-items-center justify-content-between">
+                                            <span class="sub-title">Total: </span>
                                             <span class="sub-price sub-price-total">$@subtotal</span>
                                         </span>
                                     </td>
@@ -149,6 +144,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -195,7 +191,72 @@
                 }
             });
         });
+
+        $("#CouponCode").closest("form").submit(function (e) {
+            e.preventDefault();
+            const orderNumber = $("#CouponCode").val();
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("OrderTrack", "Order")",
+                data: { OrderNumber: orderNumber },
+                success: function (response) {
+                    if (response.success) {
+                        let html = `
+                            <div style="overflow-x:auto;">
+                                <h5 style="margin-bottom:10px;">Order #${response.orderNumber}</h5>
+                                <table style="width:100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th style="border-bottom:1px solid #ddd; padding: 8px;">Product</th>
+                                            <th style="border-bottom:1px solid #ddd; padding: 8px;">Price</th>
+                                            <th style="border-bottom:1px solid #ddd; padding: 8px;">Qty</th>
+                                            <th style="border-bottom:1px solid #ddd; padding: 8px;">Subtotal</th>
+                                            <th style="border-bottom:1px solid #ddd; padding: 8px;">Order Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        `;
+                        response.items.forEach(item => {
+                            html += `
+                                <tr>
+                                    <td style="padding: 8px;">${item.name}</td>
+                                    <td style="padding: 8px;">$${item.price.toFixed(2)}</td>
+                                    <td style="padding: 8px;">${item.quantity}</td>
+                                    <td style="padding: 8px;">$${item.subtotal.toFixed(2)}</td>
+                                    <td style="padding: 8px;">${item.status}</td>
+                                </tr>
+                            `;
+                        });
+
+                        html += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                        Swal.fire({
+                            title: 'Order Found!',
+                            html: html,
+                            confirmButtonColor: '#3085d6'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Order not found.',
+                            confirmButtonColor: '#3085d6'
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while searching for the order.',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        });
     </script>
-
-
 }

@@ -67,8 +67,8 @@
                             <td>@orders.TotalAmount</td>
                             <td>@orders.Status</td>
                             <td>
-                                <a class="text-white px-3 py-1 " data-bs-toggle="modal" data-bs-target="#productDetailsModal"
-                                   onclick="loadOrderDetail(@orders.Id)">Details</a>
+                                <a class="bg-white text-indigo-800 font-semibold px-3 py-1 rounded-md shadow-sm text-sm border border-gray-300" data-bs-toggle="modal" data-bs-target="#productDetailsModal"
+                                   onclick="loadOrderDetail(@orders.Id)" style="cursor: pointer;">Details</a>
                             </td>
                         </tr>
                     }
@@ -181,6 +181,7 @@
                     `;
 
                     document.getElementById("productDetailsContent").innerHTML = html;
+
                 },
                 error: function () {
                     document.getElementById("productDetailsContent").innerHTML = "<p class='text-red-500'>Failed to load product details.</p>";
@@ -198,7 +199,7 @@
                 },
                 success: function () {
                     alert('Order status updated to: ' + newStatus);
-                    loadOrderDetail(orderId); // Refresh details
+                    window.location.reload();
                 },
                 error: function () {
                     alert('Failed to update order status.');

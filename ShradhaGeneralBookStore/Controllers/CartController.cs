@@ -26,13 +26,23 @@ namespace ShradhaGeneralBookStore.Controllers
 
             var cartItems = await _context.Cart
                 .Include(c => c.Product)
-                        .ThenInclude(p => p.ProductImages)
+                    .ThenInclude(p => p.ProductImages)
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
-            
 
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Where(o => o.UserId == userId.ToString())
+                .ToListAsync();
 
-            return View(cartItems);
+            var items = new
+            {
+                cartItems,
+                orders
+            };
+
+            return View(items);
         }
 
         [HttpGet]

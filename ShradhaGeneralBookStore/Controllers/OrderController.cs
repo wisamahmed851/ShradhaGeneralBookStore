@@ -125,5 +125,43 @@ namespace ShradhaGeneralBookStore.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> OrderTrack(string OrderNumber)
+        {
+            var userIdValue = HttpContext.Session.GetInt32("UserId");
+
+            if (userIdValue == null)
+            {
+                return Json(new { success = false, message = "You must be logged in to view your orders." });
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(o => o.OrderNumber == OrderNumber && o.UserId == userIdValue.ToString());
+
+            if (order == null)
+            {
+                return Json(new { success = false, message = "Order not found or you do not have permission to view it." });
+            }
+
+            var result = new
+            {
+                success = true,
+                orderNumber = order.OrderNumber,
+                status = order.Status,
+                items = order.OrderItems.Select(i => new
+                {
+                    name = i.Product.Name,
+                    price = i.Product.Price,
+                    quantity = i.Quantity,
+                    subtotal = i.Quantity * i.Product.Price
+                }),
+                total = order.OrderItems.Sum(i => i.Quantity * i.Product.Price)
+            };
+
+            return Json(result);
+        }
+
     }
 }

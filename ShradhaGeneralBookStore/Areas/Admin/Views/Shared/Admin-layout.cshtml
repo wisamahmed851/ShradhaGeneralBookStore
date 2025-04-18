@@ -9,8 +9,8 @@
     <!--favicon-->
     <link rel="icon" href="~/assets1/images/favicon-32x32.png" type="image/png">
     <!-- loader-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script>
+    <link href="~/assets1/css/pace.min.css" rel="stylesheet">
+    <script src="~/assets1/js/pace.min.js"></script>
     @RenderSection("Styles", required: false)
     <!--plugins-->
     <!-- SweetAlert2 CDN -->
@@ -19,12 +19,12 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/metismenu@3.0.7/dist/metisMenu.min.css~/assets1/plugins/simplebar/css/simplebar.css	">
+    <link href="~/assets1/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/assets1/plugins/metismenu/metisMenu.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets1/plugins/metismenu/mm-vertical.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets1/plugins/simplebar/css/simplebar.css">
     <!--bootstrap css-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
     <!--main css-->
@@ -37,7 +37,6 @@
     <link href="~/sass/responsive.css" rel="stylesheet">
 
 </head>
-
 <body>
     <!--start header-->
     <header class="top-header">
@@ -375,152 +374,127 @@
         </div>
         <div class="sidebar-nav">
             <!--navigation-->
-            <ul class="metismenu" id="sidenav">
+            <!-- Sidebar Navigation -->
+            <ul id="sidenav" class="space-y-2 text-sm font-medium">
                 <!-- Dashboard -->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">home</i>
-                        </div>
-                        <div class="menu-title" href="@Url.Action("Index", "Dashboard")">Dashboard</div>
+                    <a href="@Url.Action("Index", "Dashboard")" class="flex items-center p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard") ? "active" : "")">
+                        <i class="material-icons-outlined mr-2">dashboard</i> Dashboard
                     </a>
                 </li>
-                <!-- Ecommerce -->
+
+                <!-- Products Dropdown -->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">eCommerce</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i> Products</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="ecommerce-products.html"><i class="material-icons-outlined">arrow_right</i>Add Product</a>
-                        </li>
-                        <li>
-                            <a href="ecommerce-products.html"><i class="material-icons-outlined">arrow_right</i>Products</a>
-                        </li>
-                        <li>
-                            <a href="ecommerce-customers.html"><i class="material-icons-outlined">arrow_right</i>Customers</a>
-                        </li>
-                        <li>
-                            <a href="ecommerce-customer-details.html">
-                                <i class="material-icons-outlined">arrow_right</i>Customer
-                                Details
+                            <a href="@Url.Action("Index", "Products")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Products" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
                             </a>
                         </li>
                         <li>
-                            <a href="ecommerce-orders.html"><i class="material-icons-outlined">arrow_right</i>Orders</a>
-                        </li>
-                        <li>
-                            <a href="ecommerce-order-details.html">
-                                <i class="material-icons-outlined">arrow_right</i>Order
-                                Details
+                            <a href="@Url.Action("Create", "Products")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Products" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
                             </a>
                         </li>
                     </ul>
                 </li>
-                <!--Product-->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Product</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i> Orders</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="@Url.Action("Create", "Products")"><i class="material-icons-outlined">arrow_right</i>Create</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "Products")"><i class="material-icons-outlined">arrow_right</i>List</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Orders</div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="@Url.Action("Create", "OrderBack")"><i class="material-icons-outlined">arrow_right</i>Create</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("index", "OrderBack")"><i class="material-icons-outlined">arrow_right</i>List</a>
+                            <a href="@Url.Action("Index", "OrderBack")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "OrderBack" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
                         </li>
                     </ul>
                 </li>
                 <!--Author-->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Author</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i>Author</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="@Url.Action("Create", "Author")"><i class="material-icons-outlined">arrow_right</i>Create</a>
+                            <a href="@Url.Action("Index", "Author")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Author" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Author")"><i class="material-icons-outlined">arrow_right</i>List</a>
+                            <a href="@Url.Action("Create", "Author")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Author" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
+                            </a>
                         </li>
                     </ul>
                 </li>
+               
                 <!--Publisher-->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Publisher</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i>Publisher</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="@Url.Action("Create", "Publisher")"><i class="material-icons-outlined">arrow_right</i>Create</a>
+                            <a href="@Url.Action("Index", "Publisher")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Publisher" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Publisher")"><i class="material-icons-outlined">arrow_right</i>List</a>
+                            <a href="@Url.Action("Create", "Publisher")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Publisher" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
+                            </a>
                         </li>
                     </ul>
                 </li>
+
                 <!--Category-->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Category</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i>Category</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="@Url.Action("Create", "Category")"><i class="material-icons-outlined">arrow_right</i>Create</a>
+                            <a href="@Url.Action("Index", "Category")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Category" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Category")"><i class="material-icons-outlined">arrow_right</i>List</a>
+                            <a href="@Url.Action("Create", "Category")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Category" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
+                            </a>
                         </li>
                     </ul>
                 </li>
+
                 <!--Subcategory-->
                 <li>
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon">
-                            <i class="material-icons-outlined">shopping_bag</i>
-                        </div>
-                        <div class="menu-title">Subcategory</div>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span><i class="material-icons-outlined mr-2">inventory</i>Subcategory</span>
+                        <i class="material-icons-outlined">expand_more</i>
                     </a>
-                    <ul>
+                    <ul class="ml-6 mt-1 space-y-1">
                         <li>
-                            <a href="@Url.Action("Create", "Subcategory")"><i class="material-icons-outlined">arrow_right</i>Create</a>
+                            <a href="@Url.Action("Index", "Subcategory")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Subcategory" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Subcategory")"><i class="material-icons-outlined">arrow_right</i>List</a>
+                            <a href="@Url.Action("Create", "Subcategory")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "Subcategory" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
+                            </a>
                         </li>
                     </ul>
                 </li>
+
                 <!-- FAQ's -->
                 <li>
                     <a href="faq.html">
@@ -801,6 +775,49 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuItems = document.querySelectorAll("#sidenav > li > a.has-arrow");
+
+            menuItems.forEach(menu => {
+                const submenu = menu.nextElementSibling;
+
+                // Collapse all initially
+                if (submenu && submenu.tagName === "UL") {
+                    submenu.style.display = "none";
+                }
+
+                // Expand if contains .active
+                const activeLink = submenu?.querySelector("a.active");
+                if (activeLink) {
+                    submenu.style.display = "block";
+                    menu.classList.add("active-parent");
+                }
+
+                menu.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const currentlyOpen = document.querySelector("#sidenav ul[style*='display: block']");
+                    const isAlreadyOpen = submenu.style.display === "block";
+
+                    // Collapse all open dropdowns
+                    document.querySelectorAll("#sidenav ul").forEach(ul => {
+                        ul.style.display = "none";
+                    });
+                    document.querySelectorAll("#sidenav a.has-arrow").forEach(a => {
+                        a.classList.remove("active-parent");
+                    });
+
+                    // Toggle current one only if it was not already open
+                    if (!isAlreadyOpen) {
+                        submenu.style.display = "block";
+                        menu.classList.add("active-parent");
+                    }
+                });
+            });
+        });
+    </script>
+
 
 </body>
 

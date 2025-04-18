@@ -140,48 +140,48 @@
                 type: 'GET',
                 data: { id: productId },
                 dataType: 'json',
-                              success: function (product) {
-            const html = `
-                <h4 class="text-xl font-bold mb-2">${product.Name}</h4>
-                <p><strong>Category:</strong> ${product.CategoryName || "N/A"}</p>
-                <p><strong>Subcategory:</strong> ${product.SubcategoryName || "N/A"}</p>
-                <p><strong>Author:</strong> ${product.AuthorName || "N/A"}</p>
-                <p><strong>Publisher:</strong> ${product.PublisherName || "N/A"}</p>
-                <p><strong>Price:</strong> $${product.Price}</p>
-                <p><strong>Stock:</strong> ${product.Stock}</p>
-                <p><strong>Release Date:</strong> ${new Date(product.ReleaseDate).toLocaleDateString()}</p>
-                <p><strong>Version:</strong> ${product.Version}</p>
-                <p><strong>Product Type:</strong> ${product.ProductType}</p>
-                <p><strong>Description:</strong><br>${product.Description}</p>
+            success: function (product) {
+                     const html = `
+                            <h4 class="text-xl font-bold mb-2">${product.Name}</h4>
+                            <p><strong>Category:</strong> ${product.CategoryName || "N/A"}</p>
+                            <p><strong>Subcategory:</strong> ${product.SubcategoryName || "N/A"}</p>
+                            <p><strong>Author:</strong> ${product.AuthorName || "N/A"}</p>
+                            <p><strong>Publisher:</strong> ${product.PublisherName || "N/A"}</p>
+                            <p><strong>Price:</strong> $${product.Price}</p>
+                            <p><strong>Stock:</strong> ${product.Stock}</p>
+                            <p><strong>Release Date:</strong> ${new Date(product.ReleaseDate).toLocaleDateString()}</p>
+                            <p><strong>Version:</strong> ${product.Version}</p>
+                            <p><strong>Product Type:</strong> ${product.ProductType}</p>
+                            <p><strong>Description:</strong><br>${product.Description}</p>
 
-                <div class="mt-4">
-                    <h5 class="font-semibold mb-2">Cover Image</h5>
-                    <div class="flex flex-wrap gap-3">
-                        ${product.CoverImage
-                            ? `<div class="border rounded-lg p-2 d-flex">
-                                    <img src="${product.CoverImage}" width="100" class="rounded shadow" />
-                               </div>`
-                            : "<p>No cover image available.</p>"
-                        }
-                    </div>
-                </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold mb-2">Cover Image</h5>
+                                <div class="flex flex-wrap gap-3">
+                                    ${product.CoverImage
+                                        ? `<div class="border rounded-lg p-2 d-flex">
+                                                <img src="${product.CoverImage}" width="100" class="rounded shadow" />
+                                           </div>`
+                                        : "<p>No cover image available.</p>"
+                                    }
+                                </div>
+                            </div>
 
-                <div class="mt-4">
-                    <h5 class="font-semibold mb-2">Detail Images</h5>
-                    <div class="flex flex-wrap gap-4">
-                        ${product.DetailImages?.length > 0
-                            ? product.DetailImages.map(img =>
-                                `<div class="border rounded-lg p-2 d-flex">
-                                    <img src="${img}" width="100" class="rounded shadow" />
-                                </div>`).join('')
-                            : "<p>No detail images available.</p>"
-                        }
-                    </div>
-                </div>
-            `;
+                            <div class="mt-4">
+                                <h5 class="font-semibold mb-2">Detail Images</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    ${product.DetailImages?.length > 0
+                                        ? product.DetailImages.map(img =>
+                                            `<div class="border rounded-lg p-2 d-flex">
+                                                <img src="${img}" width="100" class="rounded shadow" />
+                                            </div>`).join('')
+                                        : "<p>No detail images available.</p>"
+                                    }
+                                </div>
+                            </div>
+                        `;
 
-            document.getElementById("productDetailsContent").innerHTML = html;
-        },
+                document.getElementById("productDetailsContent").innerHTML = html;
+            },
 
                 error: function () {
                     document.getElementById("productDetailsContent").innerHTML = "<p class='text-red-500'>Failed to load product details.</p>";
