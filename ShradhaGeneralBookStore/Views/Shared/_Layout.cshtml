@@ -19,7 +19,9 @@
     <title>Bookle - Book Store WooCommerce Html Template</title>
     <!--<< Favcion >>-->
     <link rel="shortcut icon" href="~/assets/img/favicon.png" />
-
+    <!--Sweet Alert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--<< Bootstrap min.css >>-->
     <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
     <!--<< All Min Css >>-->
@@ -706,6 +708,37 @@
                 loginModal.show();
             }
         });
+            const successMessage = '@TempData["SuccessMessage"]';
+        const errorMessage = '@TempData["ErrorMessage"]';
+        const warningMessage = '@TempData["WarningMessage"]';
+        if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    background: '#fff',
+                    color: '#000',
+                    confirmButtonColor: 'grey'
+                });
+            } else if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    background: '#fff',
+                    color: '#000',
+                    confirmButtonColor: '#grey'
+                });
+            } else if (warningMessage) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: warningMessage,
+                    background: '#fff',
+                    color: '#000',
+                    confirmButtonColor: '#grey'
+                });
+            }
     </script>
     @RenderSection("Scripts", required: false )
 </body>

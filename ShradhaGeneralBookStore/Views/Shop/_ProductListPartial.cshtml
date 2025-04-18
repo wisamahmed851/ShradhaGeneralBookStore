@@ -52,7 +52,7 @@
                                                     </li>
                                                 </ul>
                                                 <div class="shop-button">
-                                              <a href="@Url.Action("Index", "Cart", new { id = product.Id })" class="theme-btn">
+                                              <a href="@Url.Action("AddToCart", "Cart", new { productId = product.Id })" class="theme-btn">
                                                         <i class="fa-solid fa-basket-shopping"></i> Add To Cart
                                                     </a>
                                                 </div>

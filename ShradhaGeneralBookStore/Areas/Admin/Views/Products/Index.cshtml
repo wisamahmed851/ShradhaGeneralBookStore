@@ -84,7 +84,33 @@
         </div>
     </div>
 </div>
+@section Styles {
+        <style >
+        .custom-dropdown .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
 
+        .custom-dropdown-menu {
+            min-width: 200px;
+            background-color: #f8f9fa;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+        }
+
+            .custom-dropdown-menu .dropdown-item {
+                padding: 10px 16px;
+                color: #333;
+                transition: background 0.2s ease;
+            }
+
+                .custom-dropdown-menu .dropdown-item:hover {
+                    background-color: #e2e6ea;
+                    color: #000;
+                }
+    </style>
+
+}
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

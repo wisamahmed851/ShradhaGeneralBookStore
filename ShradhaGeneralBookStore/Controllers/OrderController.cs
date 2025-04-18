@@ -36,21 +36,10 @@ namespace ShradhaGeneralBookStore.Controllers
 
             return View(viewModel);
         }
+
         [HttpPost]
         public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-                return RedirectToAction("Index", "Home");
-
-            // Always fetch CartItems before anything else
-            model.CartItems = await _context.Cart
-                .Include(c => c.Product)
-                .Where(c => c.UserId == userId)
-                .ToListAsync();
-
-            model.TotalAmount = model.CartItems.Sum(c => c.Quantity * c.Product.Price);
-
             
             var userIdValue = HttpContext.Session.GetInt32("UserId");
             if (userIdValue == null)
@@ -120,8 +109,8 @@ namespace ShradhaGeneralBookStore.Controllers
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-
-                return RedirectToAction("ThankYou");
+                TempData["SuccessMessage"] = "Order Placed Success";
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
