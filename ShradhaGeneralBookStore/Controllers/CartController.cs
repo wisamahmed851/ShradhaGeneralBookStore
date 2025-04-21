@@ -4,6 +4,7 @@ using ShradhaGeneralBookStore.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using ShradhaGeneralBookStore.Filters;
 using System.Threading.Tasks;
+using ShradhaGeneralBookStore.Models.ViewModel;
 
 namespace ShradhaGeneralBookStore.Controllers
 {
@@ -36,14 +37,15 @@ namespace ShradhaGeneralBookStore.Controllers
                 .Where(o => o.UserId == userId.ToString())
                 .ToListAsync();
 
-            var items = new
+            var vm = new CartPageViewModel
             {
-                cartItems,
-                orders
+                CartItems = cartItems,
+                Orders = orders
             };
 
-            return View(items);
+            return View(vm);
         }
+
 
         [HttpGet]
         [ServiceFilter(typeof(AuthorizeUserAttribute))]
@@ -100,10 +102,15 @@ namespace ShradhaGeneralBookStore.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int cartId, int quantity)
         {
-            if (quantity < 1) return BadRequest();
+            if (quantity < 1)
+                return BadRequest("Quantity must be at least 1.");
 
             var cartItem = await _context.Cart.Include(c => c.Product).FirstOrDefaultAsync(c => c.Id == cartId);
-            if (cartItem == null) return NotFound();
+            if (cartItem == null)
+                return NotFound("Cart item not found.");
+
+            if (cartItem.Product.Stock < quantity)
+                return BadRequest("Requested quantity exceeds available stock.");
 
             cartItem.Quantity = quantity;
             await _context.SaveChangesAsync();

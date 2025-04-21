@@ -77,25 +77,28 @@
                     <div class="form-wrapper">
                         <h1 id="registrationModalLabel">Create account!</h1>
 
-                        <form method="post" asp-controller="Auth" asp-action="Register">
-                            <input class="inputField" type="text" name="FullName" placeholder="User Full Name" required />
-                            <input class="inputField" type="email" name="Email" placeholder="Email Address" required />
-                            <input class="inputField" type="text" name="Phone" placeholder="Phone Number" required />
-                            <input class="inputField" type="text" name="Address" placeholder="Address" required />
-                            <input class="inputField" type="password" name="Password" placeholder="Enter Password" required />
-                            <input class="inputField" type="password" name="ConfirmPassword" placeholder="Confirm Password" required />
+                        <form asp-controller="Auth" asp-action="Register" method="post" asp-antiforgery="true">
+                            <div asp-validation-summary="All" class="text-danger"></div>
 
-                            <div class="input-check remember-me">
-                                <div class="checkbox-wrapper">
-                                    <input type="checkbox" class="form-check-input" name="save-for-next" id="rememberMe">
-                                    <label for="rememberMe">Remember me</label>
-                                </div>
-                                <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
-                            </div>
+                            <input class="inputField" asp-for="FullName" placeholder="User Full Name" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
 
-                            <div class="loginBtn">
-                                <button type="submit" class="theme-btn rounded-0">Register</button>
-                            </div>
+                            <input class="inputField" asp-for="Email" placeholder="Email Address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <input class="inputField" asp-for="Phone" type="number" placeholder="Phone Number" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+
+                            <input class="inputField" asp-for="Address" placeholder="Address" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+
+                            <input class="inputField" asp-for="Password" placeholder="Enter Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+
+                            <input class="inputField" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                            <button type="submit" class="theme-btn rounded-0">Register</button>
                         </form>
 
                         <div class="orting-badge">Or</div>
@@ -125,4 +128,3 @@
         </div>
     </div>
 </div>
-

@@ -23,7 +23,7 @@ namespace ShradhaGeneralBookStore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("_AddUserModal", model); 
             }
 
             var user = new User

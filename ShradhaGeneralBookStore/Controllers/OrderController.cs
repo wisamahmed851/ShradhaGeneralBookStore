@@ -40,7 +40,6 @@ namespace ShradhaGeneralBookStore.Controllers
         [HttpPost]
         public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
         {
-            
             var userIdValue = HttpContext.Session.GetInt32("UserId");
             if (userIdValue == null)
                 return RedirectToAction("Index", "Home");
@@ -49,6 +48,39 @@ namespace ShradhaGeneralBookStore.Controllers
 
             try
             {
+                // Step 1: Calculate Delivery Charges based on Area
+                decimal deliveryCharge = 0;
+                switch (model.Area)
+                {
+                    case "1": // North Nazimabad
+                        deliveryCharge = 100;
+                        break;
+                    case "2": // Nazimabad
+                        deliveryCharge = 80;
+                        break;
+                    case "3": // Gohar
+                        deliveryCharge = 120;
+                        break;
+                    case "4": // Gulshan
+                        deliveryCharge = 150;
+                        break;
+                    case "5": // Malir
+                        deliveryCharge = 200;
+                        break;
+                    case "6": // Korangi
+                        deliveryCharge = 180;
+                        break;
+                    case "7": // Landhi
+                        deliveryCharge = 170;
+                        break;
+                    default:
+                        deliveryCharge = 100; // default fallback
+                        break;
+                }
+
+                model.DeliveryCharge = deliveryCharge;
+                model.TotalAmount += deliveryCharge;
+
                 var order = new Order
                 {
                     UserId = userIdValue.ToString(),
@@ -65,7 +97,7 @@ namespace ShradhaGeneralBookStore.Controllers
                 };
 
                 _context.Orders.Add(order);
-                await _context.SaveChangesAsync(); // Save to get order.Id
+                await _context.SaveChangesAsync();
 
                 var cartItems = await _context.Cart
                     .Include(c => c.Product)
@@ -109,13 +141,13 @@ namespace ShradhaGeneralBookStore.Controllers
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-                TempData["SuccessMessage"] = "Order Placed Success";
+
+                TempData["SuccessMessage"] = "Order Placed Successfully!";
                 return RedirectToAction("Index", "Home");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync();
-                // Log the error here if needed
                 ModelState.AddModelError("", "An error occurred while placing your order. Please try again.");
                 model.CartItems = await _context.Cart
                     .Include(c => c.Product)

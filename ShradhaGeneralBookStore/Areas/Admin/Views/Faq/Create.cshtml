@@ -1,0 +1,46 @@
+﻿@model ShradhaGeneralBookStore.Models.ViewModel.AddFaqViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-xl mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Add New Subcategory</h2>
+
+            <form method="post" asp-area="Admin" asp-controller="Faq" asp-action="Create">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label for="Question" class="block text-sm font-medium mb-1">Subcategory Name</label>
+                    <input asp-for="Question" class="author-input" type="text" placeholder="Enter subcategory name" />
+                    <span asp-validation-for="Question" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Answer" class="block text-sm font-medium mb-1">Subcategory Name</label>
+                    <textarea asp-for="Answer" class="author-input" type="text" placeholder="Enter subcategory name" ></textarea>
+                    <span asp-validation-for="Answer" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="CategoryId" class="block text-sm font-medium mb-1">Category</label>
+                    <select asp-for="CategoryId" class="author-input">
+                        <option value="">Select Category</option>
+                        @foreach (var category in ViewData["CategoryId"] as SelectList)
+                        {
+                            <option value="@category.Value">@category.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <button type="submit"
+                        class="bg-violet-900 hover:bg-violet-800 transition-all px-6 py-2 rounded-lg text-white font-semibold bg-dark">
+                    Create Subcategory
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

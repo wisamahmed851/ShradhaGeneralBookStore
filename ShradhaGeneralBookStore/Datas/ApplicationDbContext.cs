@@ -21,6 +21,11 @@ namespace ShradhaGeneralBookStore.Datas
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
+        public DbSet<Feedback> FeedBacks { get; set; }
+
+        public DbSet<Faq> Faqs { get; set; }
+
+        public DbSet<FaqCategory> FaqCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+@model ShradhaGeneralBookStore.Models.ViewModel.AddFaqsCategoryViewModel
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-xl mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Add New Faq Category</h2>
+
+            <form asp-area="Admin" asp-controller="FaqCategory" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Faq Category Name</label>
+                    <input asp-for="Name" class="author-input" type="text"
+                           placeholder="Enter Faq Category name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <button type="submit"
+                        class="bg-pink-600 hover:bg-pink-500 transition-all px-6 py-2 rounded-lg font-semibold shadow-md">
+                    Save Category
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

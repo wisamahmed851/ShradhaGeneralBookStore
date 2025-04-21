@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShradhaGeneralBookStore.Datas;
 
@@ -11,9 +12,11 @@ using ShradhaGeneralBookStore.Datas;
 namespace ShradhaGeneralBookStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418231630_Feedbackss")]
+    partial class Feedbackss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,61 +93,6 @@ namespace ShradhaGeneralBookStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorie");
-                });
-
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Faq", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Faqs");
-                });
-
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.FaqCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FaqCategories");
                 });
 
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Feedback", b =>
@@ -490,17 +438,6 @@ namespace ShradhaGeneralBookStore.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Faq", b =>
-                {
-                    b.HasOne("ShradhaGeneralBookStore.Models.Entities.FaqCategory", "Category")
-                        .WithMany("Faqs")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.OrderItem", b =>
                 {
                     b.HasOne("ShradhaGeneralBookStore.Models.Entities.Order", "Order")
@@ -583,11 +520,6 @@ namespace ShradhaGeneralBookStore.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Subcategories");
-                });
-
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.FaqCategory", b =>
-                {
-                    b.Navigation("Faqs");
                 });
 
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Order", b =>

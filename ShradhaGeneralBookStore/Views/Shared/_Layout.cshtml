@@ -42,6 +42,9 @@
     <!--<< Main.css >>-->
     <link rel="stylesheet" href="~/assets/css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Styles", required: false)
 </head>
@@ -161,7 +164,7 @@
                             </li>
                         </ul>
                         <div class="header-button mt-4">
-                            <a href="@Url.Action("Contact", "Pages")" class="theme-btn text-center">
+                            <a href="@Url.Action("Index", "ContactUs")" class="theme-btn text-center">
                                 Get A Quote <i class="fa-solid fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -276,7 +279,7 @@
                                                     </ul>
                                                 </li>
                                                 <li>
-                                                    <a href="@Url.Action("Contact", "Pages")">Contact</a>
+                                                    <a href="@Url.Action("Index", "ContactUs")">Contact</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -398,7 +401,7 @@
                                                     </ul>
                                                 </li>
                                                 <li>
-                                                    <a href="@Url.Action("Contact", "Pages")">Contact</a>
+                                                    <a href="@Url.Action("index", "ContactUs")">Contact</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -740,7 +743,12 @@
                 });
             }
     </script>
+   
     @RenderSection("Scripts", required: false )
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
 </body>
 
 
