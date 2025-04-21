@@ -1,0 +1,35 @@
+﻿@model List<ShradhaGeneralBookStore.Models.Entities.Faq>
+
+@if (Model != null && Model.Any())
+{
+    <div class="faq-content">
+        <div class="faq-accordion">
+            <div class="accordion" id="accordion">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var faqId = $"faq-{Model[i].Id}"; // Unique per FAQ ID to avoid duplication
+                    <div class="accordion-item mb-3">
+                        <h5 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#@faqId"
+                                    aria-expanded="false"
+                                    aria-controls="@faqId">
+                                @Model[i].Question
+                            </button>
+                        </h5>
+                        <div id="@faqId" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                            <div class="accordion-body">
+                                @Model[i].Answer
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No FAQs available for this category.</p>
+}
