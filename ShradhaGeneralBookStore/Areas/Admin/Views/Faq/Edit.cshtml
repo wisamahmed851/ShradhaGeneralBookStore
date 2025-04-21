@@ -1,4 +1,4 @@
-﻿@model ShradhaGeneralBookStore.Models.ViewModel.AddFaqViewModel
+﻿@model ShradhaGeneralBookStore.Models.Entities.Faq
 
 @{
     Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
@@ -9,7 +9,7 @@
         <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-xl mx-auto mt-10">
             <h2 class="text-2xl font-bold mb-6">Add New Subcategory</h2>
 
-            <form method="post" asp-area="Admin" asp-controller="Faq" asp-action="Create">
+            <form method="post" asp-area="Admin" asp-controller="Faq" asp-action="Edit" asp-route-id="@Model.Id">
                 @Html.AntiForgeryToken()
 
                 <div class="mb-4">
@@ -30,7 +30,7 @@
                         <option value="">Select Category</option>
                         @foreach (var category in ViewData["CategoryId"] as SelectList)
                         {
-                            <option value="@category.Value">@category.Text</option>
+                                <option value="@category.Value">@category.Text</option>
                         }
                     </select>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -38,7 +38,7 @@
 
                 <button type="submit"
                         class="bg-violet-900 hover:bg-violet-800 transition-all px-6 py-2 rounded-lg text-white font-semibold bg-dark">
-                    Create Faqs
+                    Update Faqs
                 </button>
             </form>
         </div>

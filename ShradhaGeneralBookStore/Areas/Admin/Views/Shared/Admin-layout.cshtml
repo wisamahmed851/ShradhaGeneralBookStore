@@ -403,6 +403,7 @@
                         </li>
                     </ul>
                 </li>
+                <!--Order Drop down-->
                 <li>
                     <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
                         <span> Orders</span>
@@ -528,6 +529,26 @@
                         </li>
                     </ul>
                 </li>
+                <!--FAQs Category-->
+                <li>
+                    <a href="#" class="has-arrow flex items-center justify-between p-2 text-white hover:bg-white/10 rounded-lg">
+                        <span>Faq Category</span>
+                        <i class="material-icons-outlined">expand_more</i>
+                    </a>
+                    <ul class="ml-6 mt-1 space-y-1">
+                        <li>
+                            <a href="@Url.Action("Index", "FaqCategory")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "FaqCategory" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "FaqCategory")" class="block p-2 text-white hover:bg-white/10 rounded-lg @((ViewContext.RouteData.Values["controller"]?.ToString() == "FaqCategory" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")">
+                                <i class="material-icons-outlined text-sm mr-2">arrow_right</i> Add New
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
             
             <!--end navigation-->

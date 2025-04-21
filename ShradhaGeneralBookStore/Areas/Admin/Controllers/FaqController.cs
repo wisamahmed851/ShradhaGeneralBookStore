@@ -21,6 +21,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
         {
             var Faqs = await _context.Faqs
                 .Include(f => f.Category)
+                .OrderByDescending(f => f.Id)
                 .ToListAsync();
             return View(Faqs);
         }
@@ -42,7 +43,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
 
                 return View();
             }
-                
+
             var FaqCategory = await _context.FaqCategories.FindAsync(Model.CategoryId);
             if (FaqCategory == null)
             {
@@ -65,10 +66,65 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Faqs Is Successfully Added";
             return RedirectToAction("Index");
         }
-        
-        public async Task<IActionResult> Edit(AddFaqViewModel Model)
+        public async Task<IActionResult> Edit(int id)
         {
+            var Faqs = await _context.Faqs.FindAsync(id);
+            if (Faqs == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(_context.FaqCategories, "Id", "Name", Faqs.CategoryId);
+            return View(Faqs);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, AddFaqViewModel Model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["WarningMessage"] = "Pleace Fixed the Errors Valiadtion and try again";
+                ViewData["CategoryId"] = new SelectList(_context.FaqCategories, "Id", "Name");
+                return View();
+            }
+            var Faqs = await _context.Faqs.FindAsync(id);
 
+            if (Faqs == null)
+            {
+                TempData["ErrorMessage"] = "Faq is not found";
+                return RedirectToAction("Index");
+            }
+            var FaqCategory = await _context.FaqCategories.FindAsync(Model.CategoryId);
+
+            if (FaqCategory == null)
+            {
+                TempData["ErrorMessage"] = "Faq Category Not Found";
+                ViewData["CategoryId"] = new SelectList(_context.FaqCategories, "Id", "Name");
+                return View();
+            }
+            Faqs.Question = Model.Question;
+            Faqs.Answer = Model.Answer;
+            Faqs.CategoryId = Model.CategoryId;
+
+            _context.Faqs.Update(Faqs);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Faqs Is Successfully Updated";
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var Faqs = await _context.Faqs.FindAsync(id);
+
+            if (Faqs == null)
+            {
+                TempData["ErrorMessage"] = "Faq is not Found Pleace Select again";
+                return RedirectToAction("Index");
+            }
+            _context.Faqs.Remove(Faqs);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Faq is deleted successfull";
+            return RedirectToAction("Index");
         }
     }
 }
