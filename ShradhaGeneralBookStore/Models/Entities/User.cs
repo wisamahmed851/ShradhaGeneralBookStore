@@ -24,6 +24,8 @@ namespace ShradhaGeneralBookStore.Models.Entities
 
         public string Role { get; set; } = "User";
 
+        public ICollection<Wishlist> Wishlists { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

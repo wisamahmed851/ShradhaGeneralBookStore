@@ -16,7 +16,8 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             // Fetch feedbacks from the database
-            var feedbacks = await _context.FeedBacks.ToListAsync();
+            var feedbacks = await _context.FeedBacks
+                .ToListAsync();
             return View(feedbacks);
         }
         public async Task<IActionResult> Delete(int id)
@@ -32,5 +33,38 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Feedback deleted successfully.";
             return RedirectToAction("Index");
         }
+        // GET: Admin/FeedBack/Reply/5
+        public async Task<IActionResult> Reply(int id)
+        {
+            var feedback = await _context.FeedBacks.FindAsync(id);
+            if (feedback == null)
+            {
+                TempData["ErrorMessage"] = "Feedback not found.";
+                return RedirectToAction("Index");
+            }
+            return View(feedback); // show feedback with a reply form
+        }
+
+        // POST: Admin/FeedBack/Reply/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reply(int id, string reply)
+        {
+            var feedback = await _context.FeedBacks.FindAsync(id);
+            if (feedback == null)
+            {
+                TempData["ErrorMessage"] = "Feedback not found.";
+                return RedirectToAction("Index");
+            }
+
+            feedback.AdminReply = reply;
+            feedback.IsReplied = true;
+            feedback.IsSeenByUser = false;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Reply sent successfully!";
+            return RedirectToAction("Index");
+        }
+
     }
 }

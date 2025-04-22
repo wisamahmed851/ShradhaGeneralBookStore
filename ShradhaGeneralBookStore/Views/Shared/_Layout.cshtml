@@ -47,6 +47,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Styles", required: false)
+    <style>
+        .wishlist-active i {
+            color: orange !important;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -669,6 +675,29 @@
     <!--<< Main.js >>-->
     <script src="~/assets/js/main.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".wishlist-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const productId = this.dataset.productId;
+                    fetch("/Wishlist/Add", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ productId })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.classList.add("wishlist-active");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script>
         window.addEventListener('DOMContentLoaded', () => {
             console.log("Checking login modal globally...");
 
@@ -688,6 +717,7 @@
             const successMessage = '@TempData["SuccessMessage"]';
         const errorMessage = '@TempData["ErrorMessage"]';
         const warningMessage = '@TempData["WarningMessage"]';
+        const replyMessage = '@TempData["ShowReplyToast"]';
         if (successMessage) {
                 Swal.fire({
                     icon: 'success',
@@ -696,6 +726,15 @@
                     background: '#fff',
                     color: '#000',
                     confirmButtonColor: 'grey'
+                });
+            } else if (replyMessage) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Admin has replied to your feedback!',
+                    text: replyMessage,
+                    background: '#fff',
+                    color: '#000',
+                    confirmButtonColor: '#000'
                 });
             } else if (errorMessage) {
                 Swal.fire({
@@ -715,7 +754,7 @@
                     color: '#000',
                     confirmButtonColor: '#grey'
                 });
-            }
+                }
     </script>
    
     @RenderSection("Scripts", required: false )

@@ -27,6 +27,9 @@ namespace ShradhaGeneralBookStore.Datas
 
         public DbSet<FaqCategory> FaqCategories { get; set; }
 
+        public DbSet<Wishlist> Wishlists { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Always call this first or last (doesn't matter)

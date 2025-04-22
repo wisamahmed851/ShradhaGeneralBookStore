@@ -89,7 +89,18 @@ namespace ShradhaGeneralBookStore.Controllers
 
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("UserRole", user.Role);
+            var userId = HttpContext.Session.GetInt32("UserId")?.ToString();
+            var feedback = await _context.FeedBacks
+                    .FirstOrDefaultAsync(f => f.UserId == userId && f.IsReplied && !f.IsSeenByUser);
 
+            if (feedback != null)
+            {
+                TempData["ShowReplyToast"] = feedback.AdminReply;
+
+                // Mark as seen so it doesn’t show next time
+                feedback.IsSeenByUser = true;
+                await _context.SaveChangesAsync();
+            }
             return user.Role == "Admin"
                 ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
                 : RedirectToAction("Index", "Home");
