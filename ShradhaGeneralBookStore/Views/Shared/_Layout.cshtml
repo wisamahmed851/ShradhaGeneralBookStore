@@ -674,28 +674,7 @@
 
     <!--<< Main.js >>-->
     <script src="~/assets/js/main.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".wishlist-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const productId = this.dataset.productId;
-                    fetch("/Wishlist/Add", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ productId })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.classList.add("wishlist-active");
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+    
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {

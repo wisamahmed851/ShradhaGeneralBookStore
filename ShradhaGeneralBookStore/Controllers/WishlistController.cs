@@ -22,7 +22,11 @@ namespace ShradhaGeneralBookStore.Controllers
 
             if (userId == null)
                 return RedirectToAction("Index", "Home");
-
+            var productExists = await _context.Product.AnyAsync(p => p.Id == productId);
+            if (!productExists)
+            {
+                return Json(new { success = false, message = "Product not found" });
+            }
             var exists = await _context.Wishlists
                 .AnyAsync(w => w.UserId == userId && w.ProductId == productId);
 

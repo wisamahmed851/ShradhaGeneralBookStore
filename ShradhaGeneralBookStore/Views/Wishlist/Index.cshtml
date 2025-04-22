@@ -1,4 +1,5 @@
-﻿ <!-- Breadcumb Section Start -->
+﻿ 
+<!-- Breadcumb Section Start -->
 <div class="breadcrumb-wrapper">
     <div class="book1">
         <img src="~/assets/img/hero/book1.png" alt="book">
@@ -48,7 +49,7 @@
                                 @foreach (var item in Model)
                                 {
                                     var product = item.Product;
-                                    var image = product.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/assets/img/default-product.png";
+                                    @* var image = product.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/assets/img/default-product.png"; *@
                                     <tr>
                                         <td>
                                             <span class="d-flex gap-5 align-items-center">
@@ -56,7 +57,7 @@
                                                     <img src="~/assets/img/icon/icon-9.svg" alt="Remove" />
                                                 </a>
                                                 <span class="cart">
-                                                    <img src="@Url.Content(image)" alt="@product.Name" />
+                                                    @* <img src="@Url.Content(image)" alt="@product.Name" /> *@
                                                 </span>
                                                 <span class="cart-title">
                                                     @product.Name
@@ -67,8 +68,8 @@
                                             <span class="cart-price">$@product.Price</span>
                                         </td>
                                         <td>
-                                            <span class="@(product.Quantity > 0 ? "stock-title" : "stock-title-two")">
-                                                @(product.Quantity > 0 ? "In Stock" : "Out Of Stock")
+                                            <span class="@(product.Stock > 0 ? "stock-title" : "stock-title-two")">
+                                                @(product.Stock > 0 ? "In Stock" : "Out Of Stock")
                                             </span>
                                         </td>
                                         <td>
