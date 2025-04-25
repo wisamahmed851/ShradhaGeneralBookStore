@@ -62,8 +62,8 @@ namespace ShradhaGeneralBookStore.Controllers
 
             if (user == null)
             {
-                ViewBag.Error = "Invalid login credentials";
-                return View();
+                TempData["ErrorMessage"] = "Invalid login credentials";
+                return RedirectToAction("Index", "Home");
             }
 
             var hasher = new PasswordHasher<User>();
@@ -82,8 +82,8 @@ namespace ShradhaGeneralBookStore.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Invalid login credentials";
-                    return View();
+                    TempData["ErrorMessage"] = "Password does not match";
+                    return RedirectToAction("Index", "Home");
                 }
             }
 

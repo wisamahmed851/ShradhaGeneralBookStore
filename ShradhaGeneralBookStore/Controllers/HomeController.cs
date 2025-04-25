@@ -39,7 +39,7 @@ namespace ShradhaGeneralBookStore.Controllers
             }
 
             // Top category names (static for now)
-            var topCategoryNames = new List<string> { "Programming", "Books", "Magzines", "" };
+            var topCategoryNames = new List<string> { "Fiction", "Non-Fiction", "Science Fiction", "Fantasy" };
 
             // Products for top categories
             var topCategoryProducts = allProducts

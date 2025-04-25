@@ -5,7 +5,6 @@ namespace ShradhaGeneralBookStore.Models.ViewModels
     public class AddUserViewModel
     {
         [Required(ErrorMessage = "Full name is required.")]
-        [RegularExpression(@"^[A-Za-z][A-Za-z\s]*$.", ErrorMessage = "Name must start with a letter and contain only letters and spaces.")]
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]

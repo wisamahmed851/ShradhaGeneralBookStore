@@ -236,15 +236,16 @@
                         <a href="@Url.Action("Details", "Shop", new { id = book.Id })">
                             <img src="@Url.Content(@book.CoverImage.ImageUrl)" alt="img">
                         </a>
+                        @{
+                            var userId = Context.Session.GetInt32("UserId");
+                            var isInWishlist = book.Wishlists?.Any(w => w.UserId == userId) == true;
+                            var wishlistClass = isInWishlist ? "wishlist-active" : "";
+                        }
                         <ul class="shop-icon d-grid justify-content-center align-items-center">
                             <li>
-                                <a href="#"><i class="far fa-heart"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><img class="icon" src="~/assets/img/icon/shuffle.svg" alt="svg-icon"></a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("Details", "Shop", new { id = book.Id })"><i class="far fa-eye"></i></a>
+                                <a href="javascript:void(0);" class="wishlist-btn @wishlistClass" data-product-id="@book.Id">
+                                    <i class="far fa-heart"></i>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -258,7 +259,7 @@
                                 <span class="thumb">
                                     <img src="~/assets/img/testimonial/client-1.png" alt="img">
                                 </span>
-                                <span class="content">(Author) @book.Author?.Name</span>
+                                <span class="content">@book.Author?.Name</span>
                             </li>
                             <li class="star">
                                 <i class="fa-solid fa-star"></i>
@@ -1371,6 +1372,14 @@
                     .then(data => {
                         if (data.success) {
                             this.classList.add("wishlist-active");
+                             Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: "The Product is added to wishlist",
+                                background: '#fff',
+                                color: '#000',
+                                confirmButtonColor: 'grey'
+                            });
                         }
                     });
                 });

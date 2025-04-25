@@ -1,4 +1,4 @@
-﻿ 
+﻿@model List<ShradhaGeneralBookStore.Models.Entities.Wishlist>
 <!-- Breadcumb Section Start -->
 <div class="breadcrumb-wrapper">
     <div class="book1">
@@ -42,43 +42,47 @@
                                     <th>Product</th>
                                     <th>Price</th>
                                     <th>Stock</th>
-                                    <th>Subtotal</th>
+                                    <th>Add Cart</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    var product = item.Product;
-                                    @* var image = product.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/assets/img/default-product.png"; *@
                                     <tr>
                                         <td>
                                             <span class="d-flex gap-5 align-items-center">
-                                                <a href="@Url.Action("RemoveFromWishlist", "Wishlist", new { id = item.Id })" class="remove-icon">
+                                                <a href="@Url.Action("Remove", "Wishlist", new { productId = item.Id })" class="remove-icon">
                                                     <img src="~/assets/img/icon/icon-9.svg" alt="Remove" />
                                                 </a>
                                                 <span class="cart">
-                                                    @* <img src="@Url.Content(image)" alt="@product.Name" /> *@
+                                                    <span class="cart">
+                                                        @{
+                                                            var imageUrl = item.Product.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/assets/img/default-product.png";
+                                                        }
+                                                        <img src="@Url.Content(imageUrl)" alt="@item.Product.Name" width="50" height="50"/>
+                                                    </span>
                                                 </span>
                                                 <span class="cart-title">
-                                                    @product.Name
+                                                    @item.Product.Name
                                                 </span>
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="cart-price">$@product.Price</span>
+                                            <span class="cart-price">$@item.Product.Price</span>
                                         </td>
                                         <td>
-                                            <span class="@(product.Stock > 0 ? "stock-title" : "stock-title-two")">
-                                                @(product.Stock > 0 ? "In Stock" : "Out Of Stock")
+                                            <span class="@(item.Product.Stock > 0 ? "stock-title" : "stock-title-two")">
+                                                @(item.Product.Stock > 0 ? "In Stock" : "Out Of Stock")
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("AddToCart", "Cart", new { productId = product.Id })" class="theme-btn small-btn">
+                                            <a href="@Url.Action("AddToCart", "Cart", new { productId = item.Product.Id })" class="theme-btn small-btn">
                                                 <i class="fa-solid fa-basket-shopping"></i> Add To Cart
                                             </a>
                                         </td>
                                     </tr>
                                 }
+                            
                             </tbody>
 
                         </table>

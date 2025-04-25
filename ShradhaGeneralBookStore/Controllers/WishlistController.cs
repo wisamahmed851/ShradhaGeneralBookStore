@@ -43,7 +43,25 @@ namespace ShradhaGeneralBookStore.Controllers
 
             return Json(new { success = true });
         }
+        public async Task<IActionResult> Remove(int productId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
 
+            if (userId == null)
+                return RedirectToAction("Index", "Home");
+            
+            var wishlist = await _context.Wishlists.FindAsync(productId);
+            
+            if (wishlist == null)
+            {
+                return Json(new { success = false });
+            }
+                _context.Wishlists.Remove(wishlist);
+                await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", "Wishlist");
+        }
         public async Task<IActionResult> Index()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -57,7 +75,12 @@ namespace ShradhaGeneralBookStore.Controllers
                     .ThenInclude(p => p.ProductImages)
                 .Include(w => w.Product.Author)
                 .ToListAsync();
-
+            foreach (var item in wishlistItems)
+            {
+                item.Product.ProductImages = item.Product.ProductImages
+                    .Where(img => img.ImageType == ProductImageType.Cover)
+                    .ToList();
+            }
             return View(wishlistItems);
         }
        

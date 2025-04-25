@@ -77,8 +77,7 @@
                     <div class="form-wrapper">
                         <h1 id="registrationModalLabel">Create account!</h1>
 
-                        <form asp-controller="Auth" asp-action="Register" method="post" asp-antiforgery="true">
-                            <div asp-validation-summary="All" class="text-danger"></div>
+                        <form asp-controller="Auth" asp-action="Register" method="post">
 
                             <input class="inputField" asp-for="FullName" placeholder="User Full Name" />
                             <span asp-validation-for="FullName" class="text-danger"></span>
