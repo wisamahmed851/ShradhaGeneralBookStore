@@ -1,0 +1,94 @@
+﻿@model List<ShradhaGeneralBookStore.Models.Entities.Wishlist>
+<!-- Breadcumb Section Start -->
+<div class="breadcrumb-wrapper">
+    <div class="book1">
+        <img src="~/assets/img/hero/book1.png" alt="book">
+    </div>
+    <div class="book2">
+        <img src="~/assets/img/hero/book2.png" alt="book">
+    </div>
+    <div class="container">
+        <div class="page-heading">
+            <h1>Wishlist</h1>
+            <div class="page-header">
+                <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </li>
+                    <li>
+                        Wishlist
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shop Cart Section Start -->
+<div class="cart-section section-padding">
+    <div class="container">
+        <div class="main-cart-wrapper">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Add Cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="d-flex gap-5 align-items-center">
+                                                <a href="@Url.Action("Remove", "Wishlist", new { productId = item.Id })" class="remove-icon">
+                                                    <img src="~/assets/img/icon/icon-9.svg" alt="Remove" />
+                                                </a>
+                                                <span class="cart">
+                                                    <span class="cart">
+                                                        @{
+                                                            var imageUrl = item.Product.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/assets/img/default-product.png";
+                                                        }
+                                                        <img src="@Url.Content(imageUrl)" alt="@item.Product.Name" width="50" height="50"/>
+                                                    </span>
+                                                </span>
+                                                <span class="cart-title">
+                                                    @item.Product.Name
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="cart-price">$@item.Product.Price</span>
+                                        </td>
+                                        <td>
+                                            <span class="@(item.Product.Stock > 0 ? "stock-title" : "stock-title-two")">
+                                                @(item.Product.Stock > 0 ? "In Stock" : "Out Of Stock")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("AddToCart", "Cart", new { productId = item.Product.Id })" class="theme-btn small-btn">
+                                                <i class="fa-solid fa-basket-shopping"></i> Add To Cart
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

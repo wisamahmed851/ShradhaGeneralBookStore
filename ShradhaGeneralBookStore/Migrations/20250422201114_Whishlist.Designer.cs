@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShradhaGeneralBookStore.Datas;
 
@@ -11,9 +12,11 @@ using ShradhaGeneralBookStore.Datas;
 namespace ShradhaGeneralBookStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250422201114_Whishlist")]
+    partial class Whishlist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,10 +341,6 @@ namespace ShradhaGeneralBookStore.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -484,32 +483,6 @@ namespace ShradhaGeneralBookStore.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Wishlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Wishlists");
-                });
-
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Cart", b =>
                 {
                     b.HasOne("ShradhaGeneralBookStore.Models.Entities.Product", "Product")
@@ -612,25 +585,6 @@ namespace ShradhaGeneralBookStore.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Wishlist", b =>
-                {
-                    b.HasOne("ShradhaGeneralBookStore.Models.Entities.Product", "Product")
-                        .WithMany("Wishlists")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShradhaGeneralBookStore.Models.Entities.User", "User")
-                        .WithMany("Wishlists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Author", b =>
                 {
                     b.Navigation("Products");
@@ -656,8 +610,6 @@ namespace ShradhaGeneralBookStore.Migrations
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Product", b =>
                 {
                     b.Navigation("ProductImages");
-
-                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Publisher", b =>
@@ -668,11 +620,6 @@ namespace ShradhaGeneralBookStore.Migrations
             modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.Subcategory", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("ShradhaGeneralBookStore.Models.Entities.User", b =>
-                {
-                    b.Navigation("Wishlists");
                 });
 #pragma warning restore 612, 618
         }

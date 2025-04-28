@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin-Layout.cshtml";
+}
+@model ShradhaGeneralBookStore.Models.Entities.Feedback
+
+@{
+    ViewData["Title"] = "Reply to Feedback";
+}
+
+<h2>Reply to Feedback</h2>
+
+<main class="main-wrapper">
+    <div class="main-content">
+        <div class="card p-4 rounded-2xl shadow-lg bg-gradient-to-r from-indigo-900 to-indigo-800 text-white max-w-6xl mx-auto mt-10">
+                <div class="card p-3">
+                    <p><strong>Name:</strong> @Model.Name</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Message:</strong> @Model.Message</p>
+
+                    <form asp-action="Reply" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="form-group">
+                            <label for="reply">Admin Reply</label>
+                            <textarea name="reply" class="form-control" rows="4">@Model.AdminReply</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Send Reply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</main>

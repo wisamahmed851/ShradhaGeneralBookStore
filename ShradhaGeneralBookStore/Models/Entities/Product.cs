@@ -50,6 +50,8 @@ namespace ShradhaGeneralBookStore.Models.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public ICollection<Wishlist> Wishlists { get; set; }
+
         public ICollection<ProductImage> ProductImages { get; set; }
         [NotMapped]
         public ProductImage CoverImage => ProductImages?.FirstOrDefault(img => img.ImageType == ProductImageType.Cover);

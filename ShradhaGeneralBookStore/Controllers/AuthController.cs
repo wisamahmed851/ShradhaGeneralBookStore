@@ -62,8 +62,8 @@ namespace ShradhaGeneralBookStore.Controllers
 
             if (user == null)
             {
-                ViewBag.Error = "Invalid login credentials";
-                return View();
+                TempData["ErrorMessage"] = "Invalid login credentials";
+                return RedirectToAction("Index", "Home");
             }
 
             var hasher = new PasswordHasher<User>();
@@ -82,14 +82,25 @@ namespace ShradhaGeneralBookStore.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Invalid login credentials";
-                    return View();
+                    TempData["ErrorMessage"] = "Password does not match";
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("UserRole", user.Role);
+            var userId = HttpContext.Session.GetInt32("UserId")?.ToString();
+            var feedback = await _context.FeedBacks
+                    .FirstOrDefaultAsync(f => f.UserId == userId && f.IsReplied && !f.IsSeenByUser);
 
+            if (feedback != null)
+            {
+                TempData["ShowReplyToast"] = feedback.AdminReply;
+
+                // Mark as seen so it doesn’t show next time
+                feedback.IsSeenByUser = true;
+                await _context.SaveChangesAsync();
+            }
             return user.Role == "Admin"
                 ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
                 : RedirectToAction("Index", "Home");
