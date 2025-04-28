@@ -45,6 +45,9 @@ namespace ShradhaGeneralBookStore.Models.Entities
         public string UniqueCode { get; set; }
 
         public int Stock { get; set; }
+
+        public string? status { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<ProductImage> ProductImages { get; set; }
