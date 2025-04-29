@@ -26,6 +26,7 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Publisher)
                 .Include(p => p.ProductImages)
+                .Where(p => p.status == "Active")
                 .ToListAsync();
             foreach (var product in products)
             {
@@ -99,7 +100,8 @@ namespace ShradhaGeneralBookStore.Areas.Admin.Controllers
                 Version = model.Version,
                 ProductType = model.ProductType,
                 UniqueCode = generatedCode,
-                Stock = model.Stock
+                Stock = model.Stock,
+                status = "Active"
             };
 
             _context.Product.Add(product);
