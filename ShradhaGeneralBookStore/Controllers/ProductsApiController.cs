@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShradhaGeneralBookStore.Datas;
 using ShradhaGeneralBookStore.Dtos;
@@ -7,6 +8,7 @@ using ShradhaGeneralBookStore.Models.Entities;
 namespace ShradhaGeneralBookStore.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ProductsApiController : Controller
     {
@@ -19,6 +21,7 @@ namespace ShradhaGeneralBookStore.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllActiveProducts()
         {
             var products = await _context.Product

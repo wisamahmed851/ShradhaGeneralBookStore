@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ShradhaGeneralBookStore.Datas;
 using ShradhaGeneralBookStore.Filters;
 using ShradhaGeneralBookStore.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +16,26 @@ builder.Services.AddSession();
 
 builder.Services.AddControllersWithViews()
     .AddSessionStateTempDataProvider();
-// Register the custom filter here 👇
+
+// Register the custom filter
 builder.Services.AddScoped<AuthorizeUserAttribute>();
+
+// ✅ Correct: Add Authentication BEFORE app.Build()
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 var app = builder.Build();
 
@@ -25,20 +46,19 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // 🟢 should be before routing
+
 app.UseRouting();
 
-app.UseSession(); 
+app.UseAuthentication(); // 🟢 must be before Authorization
+app.UseAuthorization();
+
+app.UseSession();
 
 app.UseMiddleware<AdminAuthMiddleware>();
 
-app.UseAuthorization();
-
-
-// Comment out custom methods temporarily if unsure
-// app.MapStaticAssets();
-
+// MVC Routes
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
@@ -47,5 +67,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.UseStaticFiles();
 app.Run();
