@@ -8,12 +8,11 @@ using ShradhaGeneralBookStore.Models.Entities;
 namespace ShradhaGeneralBookStore.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
     public class ProductsApiController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _hostEnvironment;  
+        private readonly IWebHostEnvironment _hostEnvironment;
         public ProductsApiController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
@@ -21,26 +20,28 @@ namespace ShradhaGeneralBookStore.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllActiveProducts()
         {
             var products = await _context.Product
                 .Include(p => p.Category)
                 .Include(p => p.Subcategory)
+                .Include(p => p.ProductImages)
                 .Where(p => p.status == "Active")
-                .Select(p => new ProductDto
-                {
-                    Name = p.Name,
-
-                    CategoryName = p.Category.Name,
-                    SubcategoryName = p.Subcategory.Name,
-                    Price = p.Price
-                })
                 .ToListAsync();
+            var productDtos = products.Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                CategoryName = p.Category.Name,
+                SubcategoryName = p.Subcategory.Name,
+                Price = p.Price,
+                ImagePath = p.ProductImages
+                             .FirstOrDefault(img => img.ImageType == ProductImageType.Cover)
+                             ?.ImageUrl
+            }).ToList();
 
-            return Ok(products);
+            return Ok(productDtos);
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductsDetails(int id)
         {
@@ -54,7 +55,7 @@ namespace ShradhaGeneralBookStore.Controllers
                 .Where(p => p.status == "Active")
                 .FirstOrDefaultAsync();
             if (product == null)
-                return NotFound(new {message = "Product Not found"});
+                return NotFound(new { message = "Product Not found" });
 
             var productDto = new ProductDetailsDto
             {
@@ -117,7 +118,7 @@ namespace ShradhaGeneralBookStore.Controllers
             await _context.SaveChangesAsync();
 
             string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "ProductImages");
-            if(!Directory.Exists(uploadPath))
+            if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
 
             //if (dto.coverImage != null)
@@ -156,10 +157,10 @@ namespace ShradhaGeneralBookStore.Controllers
             //            _context.ProductImage.Add(productDetailImage);
             //        }
             //    }
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Product created successfully", productId = product.Id });
-            }
+            return Ok(new { message = "Product created successfully", productId = product.Id });
+        }
         }
     }
     

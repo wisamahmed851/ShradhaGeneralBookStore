@@ -36,6 +36,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontendLocalhost", policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500") // frontend origin
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -50,6 +59,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // 🟢 should be before routing
 
 app.UseRouting();
+app.UseCors("AllowFrontendLocalhost"); // 👈 allow CORS here
 
 app.UseAuthentication(); // 🟢 must be before Authorization
 app.UseAuthorization();
@@ -66,5 +76,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapControllers();
 app.Run();

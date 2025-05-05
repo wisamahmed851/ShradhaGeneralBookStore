@@ -53,6 +53,8 @@ namespace ShradhaGeneralBookStore.Controllers
 
             return Ok(new { message = "User Created Successfull", userId = user.Id });
         }
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
