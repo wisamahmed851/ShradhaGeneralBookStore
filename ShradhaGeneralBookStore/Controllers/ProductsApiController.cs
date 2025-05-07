@@ -63,7 +63,7 @@ namespace ShradhaGeneralBookStore.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 CategoryName = product.Category.Name,
-                Subcategoryname = product.Subcategory.Name,
+                SubcategoryName = product.Subcategory.Name,
                 AuthorName = product.Author.Name,
                 PublisherName = product.Publisher.Name,
                 Price = product.Price,

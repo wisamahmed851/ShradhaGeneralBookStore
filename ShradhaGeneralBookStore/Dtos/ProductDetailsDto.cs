@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string CategoryName { get; set; }
-        public string Subcategoryname { get; set; }
+        public string SubcategoryName { get; set; }
         public string AuthorName { get; set; }
         public string PublisherName { get; set; }
         public decimal Price { get; set; }

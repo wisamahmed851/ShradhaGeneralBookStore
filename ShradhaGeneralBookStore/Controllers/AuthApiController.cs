@@ -89,7 +89,15 @@ namespace ShradhaGeneralBookStore.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return Ok(new { token = tokenString });
+            return Ok(new {
+                token = tokenString,
+                user = new
+                {
+                    user.Id,
+                    user.Email,
+                    user.Role
+                }
+            });
         
         }
     }

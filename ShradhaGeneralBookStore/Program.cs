@@ -7,6 +7,7 @@ using ShradhaGeneralBookStore.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -38,12 +39,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontendLocalhost", policy =>
+    options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500") // frontend origin
+        policy.WithOrigins("http://localhost:5173/") // frontend origin
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
+});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 var app = builder.Build();
@@ -59,7 +70,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // 🟢 should be before routing
 
 app.UseRouting();
-app.UseCors("AllowFrontendLocalhost"); // 👈 allow CORS here
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication(); // 🟢 must be before Authorization
 app.UseAuthorization();
